@@ -3,7 +3,7 @@
 DST_DIR="/var/www/html/quiz-bingo/"
 
 mkdir tmp
-cp -rf client/* tmp/
+cp -rf src/* tmp/
 cd tmp
 sed -i -e "s/^.*console\.log.*$//" *.js
 rm -rf $DST_DIR/*
