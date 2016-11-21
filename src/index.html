@@ -15,63 +15,14 @@
     <script type="text/javascript" src="js/quiz-bingo.js"></script>
 </head>
 <body>
+    <script>
+        $.material.init();
+    </script>
 
-<script>
-    $.material.init();
-</script>
+    <table id="buttons">
+    </table>
 
-<table>
-    <tr>
-        <td><button type="button" id="number_1" class="btn btn-raised btn-default btn-main" data-toggle="modal" data-target="#quiz1">1</button></td>
-        <td><button type="button" id="number_2" class="btn btn-raised btn-default btn-main" data-toggle="modal" data-target="#quiz2">2</button></td>
-        <td><button type="button" id="number_3" class="btn btn-raised btn-default btn-main">3</button></td>
-        <td><button type="button" id="number_4" class="btn btn-raised btn-default btn-main">4</button></td>
-        <td><button type="button" id="number_5" class="btn btn-raised btn-default btn-main">5</button></td>
-        <td><button type="button" id="number_6" class="btn btn-raised btn-default btn-main">6</button></td>
-        <td><button type="button" id="number_7" class="btn btn-raised btn-default btn-main">7</button></td>
-        <td><button type="button" id="number_8" class="btn btn-raised btn-default btn-main">8</button></td>
-        <td><button type="button" id="number_9" class="btn btn-raised btn-default btn-main">9</button></td>
-        <td><button type="button" id="number_10" class="btn btn-raised btn-default btn-main">10</button></td>
-    </tr>
-    <tr>
-        <td><button type="button" id="number_1" class="btn btn-raised btn-default btn-main">11</button></td>
-        <td><button type="button" id="number_2" class="btn btn-raised btn-default btn-main">12</button></td>
-        <td><button type="button" id="number_3" class="btn btn-raised btn-default btn-main">13</button></td>
-        <td><button type="button" id="number_4" class="btn btn-raised btn-default btn-main">14</button></td>
-        <td><button type="button" id="number_5" class="btn btn-raised btn-default btn-main">15</button></td>
-        <td><button type="button" id="number_6" class="btn btn-raised btn-default btn-main">16</button></td>
-        <td><button type="button" id="number_7" class="btn btn-raised btn-default btn-main">17</button></td>
-        <td><button type="button" id="number_8" class="btn btn-raised btn-default btn-main">18</button></td>
-        <td><button type="button" id="number_9" class="btn btn-raised btn-default btn-main">19</button></td>
-        <td><button type="button" id="number_10" class="btn btn-raised btn-default btn-main">20</button></td>
-    </tr>
-</table>
-
-<div id="quiz1" class="modal fade" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>クイズ1</h2>
-            </div>
-            <div class="modal-body">
-                <p>test</p>
-            </div>
-        </div>
+    <div id="quizzes">
     </div>
-</div>
-
-<div id="quiz2" class="modal fade" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h2>クイズ2</h2>
-            </div>
-            <div class="modal-body">
-                <p>test</p>
-            </div>
-        </div>
-    </div>
-</div>
-
 </body>
 </html>
