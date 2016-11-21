@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+html {
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+.btn-main {
+    width: 100px;
+    height: 100px;
+    font-size: 20px;
+}
