@@ -1,7 +1,18 @@
 
 let maxNumber = 75;
+let flag = Array();
+
 window.addEventListener('load',
     function (event) {
+
+        //初期化
+        document.getElementById('start').style.display = 'block';
+        document.getElementById('running').style.display = 'none';
+        document.getElementById('btnStart').addEventListener('click', clickStart, false);
+        for (let i = 1; i <= maxNumber; i++) {
+            flag[i] = false;
+        }
+
         //ボタン生成
         let buttons = document.getElementById('buttons');
         for (let i = 0; i < (maxNumber/10); i++) {
@@ -41,7 +52,7 @@ window.addEventListener('load',
             modalContent.className = 'modal-content';
             modalHeader.className = 'modal-header';
             modalBody.className = 'modal-body';
-            header.innerHTML = 'クイズ ' + i;
+            header.innerHTML = 'QUIZ ' + i;
             body.innerHTML = 'text';
             modalHeader.appendChild(header);
             modalBody.appendChild(body);
@@ -57,6 +68,19 @@ window.addEventListener('load',
 function clickButton(number) {
     console.log(number);
     let button = document.getElementById('button' + number);
-    button.className = 'btn btn-raised btn-info btn-main';
-    $('#quiz' + number).modal();
+    if (flag[number] == false) {
+        button.className = 'btn btn-raised btn-info btn-main';
+        $('#quiz' + number).modal();
+        flag[number] = true;
+    }
+    else {
+        button.className = 'btn btn-raised btn-default btn-main';
+        flag[number] = false;
+    }
+}
+
+function clickStart() {
+    console.log('clickStart');
+    document.getElementById('start').style.display = 'none';
+    document.getElementById('running').style.display = 'block';
 }
