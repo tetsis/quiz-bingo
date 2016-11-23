@@ -19,8 +19,20 @@ body {
     margin: 0 auto;
 }
 
-.btn-main {
+.btn_main {
     width: 100px;
     height: 100px;
+    font-size: 30px;
+}
+
+.btn_answer {
+    font-size: 30px;
+}
+
+.btn_result {
+    font-size: 20px;
+}
+
+.sentence {
     font-size: 30px;
 }

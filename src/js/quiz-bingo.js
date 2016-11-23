@@ -1,6 +1,7 @@
 
 let maxNumber = 75;
 let flag = Array();
+let answerFlag = false;
 
 window.addEventListener('load',
     function (event) {
@@ -26,7 +27,7 @@ window.addEventListener('load',
                 }
                 button.type = 'button';
                 button.id = 'button' + number;
-                button.className = 'btn btn-raised btn-default btn-main';
+                button.className = 'btn btn-raised btn-default btn_main';
                 button.innerHTML = number;
                 button.addEventListener('click', function(){clickButton(number)}, false);
                 td.appendChild(button);
@@ -43,21 +44,59 @@ window.addEventListener('load',
             let modalContent = document.createElement('div');
             let modalHeader = document.createElement('div');
             let modalBody = document.createElement('div');
+            let modalFooter = document.createElement('div');
             let header = document.createElement('h2');
-            let body = document.createElement('p');
+            let quizBody = document.createElement('div');
+            let answerButton = document.createElement('button');
+            let answerBody = document.createElement('div');
+            let mistakeButton = document.createElement('button');
+            let correctButton = document.createElement('button');
             quiz.id = 'quiz' + i;
             quiz.className = 'modal fade';
             quiz.tabindex = '-1';
-            modalDialog.className = 'modal-dialog';
+            modalDialog.className = 'modal-dialog modal-lg';
             modalContent.className = 'modal-content';
             modalHeader.className = 'modal-header';
             modalBody.className = 'modal-body';
+            modalFooter.id = 'modalFooter' + i;
+            modalFooter.className = 'modal-footer';
+
             header.innerHTML = 'QUIZ ' + i;
-            body.innerHTML = 'text';
             modalHeader.appendChild(header);
-            modalBody.appendChild(body);
             modalContent.appendChild(modalHeader);
+
+            quizBody.className = 'sentence';
+            quizBody.innerHTML = 'No.' + i + ' question sentence is written here.';
+            modalBody.appendChild(quizBody);
+
+            answerButton.type = 'button';
+            answerButton.id = 'answerButton' + i;
+            answerButton.className = 'btn btn-raised btn-success btn_answer';
+            answerButton.innerHTML = 'ANSWER';
+            answerButton.addEventListener('click', function(){clickAnswer(i)}, false);
+            modalBody.appendChild(answerButton);
+
+            answerBody.id = 'answerBody' + i;
+            answerBody.className = 'sentence';
+            answerBody.innerHTML = 'No.' + i + ' answer sentence is written here when <ANSWER> button is clicked. answer sentence is written here when <ANSWER> button is clicked.';
+            modalBody.appendChild(answerBody);
             modalContent.appendChild(modalBody);
+
+            mistakeButton.type = 'button';
+            mistakeButton.id = 'mistakeButton' + i;
+            mistakeButton.className = 'btn btn-raised btn-default btn_result';
+            mistakeButton.innerHTML = 'MISTAKE';
+            mistakeButton.addEventListener('click', function(){clickMistake(i)}, false);
+            modalFooter.appendChild(mistakeButton);
+
+            correctButton.type = 'button';
+            correctButton.id = 'correctButton' + i;
+            correctButton.className = 'btn btn-raised btn-primary btn_result';
+            correctButton.innerHTML = 'CORRECT';
+            correctButton.addEventListener('click', function(){clickCorrect(i)}, false);
+            modalFooter.appendChild(correctButton);
+            modalContent.appendChild(modalFooter);
+
             modalDialog.appendChild(modalContent);
             quiz.appendChild(modalDialog);
             quizzes.appendChild(quiz);
@@ -65,22 +104,48 @@ window.addEventListener('load',
     }
 , false);
 
-function clickButton(number) {
-    console.log(number);
-    let button = document.getElementById('button' + number);
-    if (flag[number] == false) {
-        button.className = 'btn btn-raised btn-info btn-main';
-        $('#quiz' + number).modal();
-        flag[number] = true;
-    }
-    else {
-        button.className = 'btn btn-raised btn-default btn-main';
-        flag[number] = false;
-    }
-}
-
 function clickStart() {
     console.log('clickStart');
     document.getElementById('start').style.display = 'none';
     document.getElementById('running').style.display = 'block';
 }
+
+function clickButton(number) {
+    console.log(number);
+    let button = document.getElementById('button' + number);
+    let answerBody = document.getElementById('answerBody' + number);
+    let modalFooter = document.getElementById('modalFooter' + number);
+    if (flag[number] == false) {
+        button.className = 'btn btn-raised btn-info btn_main';
+        answerBody.style.display = 'none';
+        modalFooter.style.display = 'none';
+        flag[number] = true;
+        answerFlag = false;
+        $('#quiz' + number).modal();
+    }
+    else {
+        button.className = 'btn btn-raised btn-default btn_main';
+        flag[number] = false;
+    }
+}
+
+function clickAnswer(number) {
+    console.log('clickAnswer');
+    let answerBody = document.getElementById('answerBody' + number);
+    let modalFooter = document.getElementById('modalFooter' + number);
+    if (answerFlag == false) {
+        answerBody.style.display = 'block';
+        modalFooter.style.display = 'block';
+        answerFlag = true;
+    }
+}
+
+function clickMistake(number) {
+    console.log('clickMistake');
+}
+
+function clickCorrect(number) {
+    console.log('clickCorrect');
+}
+
+
