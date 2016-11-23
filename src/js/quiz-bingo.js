@@ -28,7 +28,7 @@ window.addEventListener('load',
                 }
                 button.type = 'button';
                 button.id = 'button' + number;
-                button.className = 'btn btn-raised btn-default btn_quiz';
+                button.className = 'btn btn-raised btn-outline-default waves-effect btn_quiz';
                 button.innerHTML = number;
                 button.addEventListener('click', function(){clickButton(number)}, false);
                 td.appendChild(button);
@@ -74,7 +74,7 @@ window.addEventListener('load',
 
             answerButton.type = 'button';
             answerButton.id = 'answerButton' + i;
-            answerButton.className = 'btn btn-raised btn-success btn_answer';
+            answerButton.className = 'btn btn-raised btn-success waves-effect btn_answer';
             answerButton.innerHTML = 'ANSWER';
             answerButton.addEventListener('click', function(){clickAnswer(i)}, false);
             modalBody.appendChild(answerButton);
@@ -90,14 +90,14 @@ window.addEventListener('load',
 
             mistakeButton.type = 'button';
             mistakeButton.id = 'mistakeButton' + i;
-            mistakeButton.className = 'btn btn-default btn_result';
+            mistakeButton.className = 'btn btn-outline-danger waves-effect btn_result';
             mistakeButton.innerHTML = 'MISTAKE';
             mistakeButton.addEventListener('click', function(){clickMistake(i)}, false);
             modalFooter.appendChild(mistakeButton);
 
             correctButton.type = 'button';
             correctButton.id = 'correctButton' + i;
-            correctButton.className = 'btn btn-primary btn_result';
+            correctButton.className = 'btn btn-outline-info waves-effect btn_result';
             correctButton.innerHTML = 'CORRECT';
             correctButton.addEventListener('click', function(){clickCorrect(i)}, false);
             modalFooter.appendChild(correctButton);
@@ -144,7 +144,7 @@ function clickAnswer(number) {
 function clickMistake(number) {
     console.log('clickMistake');
     let button = document.getElementById('button' + number);
-    button.className = 'btn btn-raised btn-warning btn_quiz';
+    button.className = 'btn btn-raised btn-danger waves-effect btn_quiz';
     $('#quiz' + number).modal('hide');
     flag[number] = true;
 }
@@ -152,7 +152,7 @@ function clickMistake(number) {
 function clickCorrect(number) {
     console.log('clickCorrect');
     let button = document.getElementById('button' + number);
-    button.className = 'btn btn-raised btn-info btn_quiz';
+    button.className = 'btn btn-raised btn-info waves-effect btn_quiz';
     $('#quiz' + number).modal('hide');
     flag[number] = true;
 }
@@ -163,6 +163,7 @@ function getCSV(filename) {
     let req = new XMLHttpRequest();
     let lines = new Array();
     req.open("get", filename, false);
+    req.overrideMimeType('text/plain; charset=Shift_JIS');
     req.send(null);
     lines = req.responseText.split('\n');
     for (let i = 0; i < lines.length; i++) {
