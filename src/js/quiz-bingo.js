@@ -26,7 +26,7 @@ window.addEventListener('load',
                 }
                 button.type = 'button';
                 button.id = 'button' + number;
-                button.className = 'btn btn-raised btn-default btn_main';
+                button.className = 'btn btn-raised btn-default btn_quiz';
                 button.innerHTML = number;
                 button.addEventListener('click', function(){clickButton(number)}, false);
                 td.appendChild(button);
@@ -123,7 +123,7 @@ function clickButton(number) {
         $('#quiz' + number).modal('show');
     }
     else {
-        button.className = 'btn btn-raised btn-default btn_main';
+        button.className = 'btn btn-raised btn-default btn_quiz';
         flag[number] = false;
     }
 }
@@ -138,7 +138,7 @@ function clickAnswer(number) {
 function clickMistake(number) {
     console.log('clickMistake');
     let button = document.getElementById('button' + number);
-    button.className = 'btn btn-raised btn-warning btn_main';
+    button.className = 'btn btn-raised btn-warning btn_quiz';
     $('#quiz' + number).modal('hide');
     flag[number] = true;
 }
@@ -146,7 +146,7 @@ function clickMistake(number) {
 function clickCorrect(number) {
     console.log('clickCorrect');
     let button = document.getElementById('button' + number);
-    button.className = 'btn btn-raised btn-info btn_main';
+    button.className = 'btn btn-raised btn-info btn_quiz';
     $('#quiz' + number).modal('hide');
     flag[number] = true;
 }
