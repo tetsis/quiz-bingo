@@ -123,8 +123,10 @@ function clickButton(number) {
     let answerBody = document.getElementById('answerBody' + number);
     let modalFooter = document.getElementById('modalFooter' + number);
     if (flag[number] == false) {
-        quizBody.innerHTML = quizAndAnswer[quizCounter][0];
-        answerBody.innerHTML = quizAndAnswer[quizCounter][1];
+        if (quizAndAnswer.length > quizCounter) {
+            quizBody.innerHTML = quizAndAnswer[quizCounter][0];
+            answerBody.innerHTML = quizAndAnswer[quizCounter][1];
+        }
         quizCounter++;
         modalFooter.style.display = 'none';
         $('#collapse' + number).collapse('hide');
