@@ -61,12 +61,12 @@ window.addEventListener('load',
             modalFooter.id = 'modalFooter' + i;
             modalFooter.className = 'modal-footer';
 
-            header.innerHTML = 'QUIZ ' + i;
+            header.innerHTML = 'QUIZ No.' + i;
             modalHeader.appendChild(header);
             modalContent.appendChild(modalHeader);
 
             quizBody.className = 'well sentence';
-            quizBody.innerHTML = 'No.' + i + ' question sentence is written here.';
+            quizBody.innerHTML = 'No.' + i + ' quiz sentence is written here. Once you know the answer to this quiz, please click ANSWER button.';
             modalBody.appendChild(quizBody);
 
             answerButton.type = 'button';
@@ -80,7 +80,7 @@ window.addEventListener('load',
             collapse.className = 'collapse';
             answerBody.id = 'answerBody' + i;
             answerBody.className = 'well sentence';
-            answerBody.innerHTML = 'No.' + i + ' answer sentence is written here when ANSWER button is clicked. answer sentence is written here when ANSWER button is clicked.';
+            answerBody.innerHTML = 'No.' + i + ' answer sentence is written here when ANSWER button is clicked. This section appears using "collapse" function of Material Design for Bootstrap.';
             collapse.appendChild(answerBody);
             modalBody.appendChild(collapse);
             modalContent.appendChild(modalBody);
