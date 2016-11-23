@@ -116,12 +116,11 @@ function clickButton(number) {
     let answerBody = document.getElementById('answerBody' + number);
     let modalFooter = document.getElementById('modalFooter' + number);
     if (flag[number] == false) {
-        button.className = 'btn btn-raised btn-info btn_main';
         answerBody.style.display = 'none';
         modalFooter.style.display = 'none';
         flag[number] = true;
         answerFlag = false;
-        $('#quiz' + number).modal();
+        $('#quiz' + number).modal('show');
     }
     else {
         button.className = 'btn btn-raised btn-default btn_main';
@@ -142,10 +141,16 @@ function clickAnswer(number) {
 
 function clickMistake(number) {
     console.log('clickMistake');
+    let button = document.getElementById('button' + number);
+    button.className = 'btn btn-raised btn-warning btn_main';
+    $('#quiz' + number).modal('hide');
 }
 
 function clickCorrect(number) {
     console.log('clickCorrect');
+    let button = document.getElementById('button' + number);
+    button.className = 'btn btn-raised btn-info btn_main';
+    $('#quiz' + number).modal('hide');
 }
 
 
