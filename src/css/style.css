@@ -27,6 +27,8 @@ body {
 
 .btn_answer {
     font-size: 30px;
+    margin: 20px auto;
+    display: block;
 }
 
 .btn_result {
@@ -35,4 +37,5 @@ body {
 
 .sentence {
     font-size: 30px;
+    margin: 0px auto;
 }

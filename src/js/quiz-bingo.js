@@ -48,6 +48,7 @@ window.addEventListener('load',
             let header = document.createElement('h2');
             let quizBody = document.createElement('div');
             let answerButton = document.createElement('button');
+            let collapse = document.createElement('div');
             let answerBody = document.createElement('div');
             let mistakeButton = document.createElement('button');
             let correctButton = document.createElement('button');
@@ -65,7 +66,7 @@ window.addEventListener('load',
             modalHeader.appendChild(header);
             modalContent.appendChild(modalHeader);
 
-            quizBody.className = 'sentence';
+            quizBody.className = 'well sentence';
             quizBody.innerHTML = 'No.' + i + ' question sentence is written here.';
             modalBody.appendChild(quizBody);
 
@@ -76,10 +77,13 @@ window.addEventListener('load',
             answerButton.addEventListener('click', function(){clickAnswer(i)}, false);
             modalBody.appendChild(answerButton);
 
+            collapse.id = 'collapse' + i;
+            collapse.className = 'collapse';
             answerBody.id = 'answerBody' + i;
-            answerBody.className = 'sentence';
-            answerBody.innerHTML = 'No.' + i + ' answer sentence is written here when <ANSWER> button is clicked. answer sentence is written here when <ANSWER> button is clicked.';
-            modalBody.appendChild(answerBody);
+            answerBody.className = 'well sentence';
+            answerBody.innerHTML = 'No.' + i + ' answer sentence is written here when ANSWER button is clicked. answer sentence is written here when ANSWER button is clicked.';
+            collapse.appendChild(answerBody);
+            modalBody.appendChild(collapse);
             modalContent.appendChild(modalBody);
 
             mistakeButton.type = 'button';
@@ -113,13 +117,12 @@ function clickStart() {
 function clickButton(number) {
     console.log(number);
     let button = document.getElementById('button' + number);
-    let answerBody = document.getElementById('answerBody' + number);
     let modalFooter = document.getElementById('modalFooter' + number);
     if (flag[number] == false) {
-        answerBody.style.display = 'none';
         modalFooter.style.display = 'none';
         flag[number] = true;
         answerFlag = false;
+        $('#collapse' + number).collapse('hide');
         $('#quiz' + number).modal('show');
     }
     else {
@@ -130,10 +133,9 @@ function clickButton(number) {
 
 function clickAnswer(number) {
     console.log('clickAnswer');
-    let answerBody = document.getElementById('answerBody' + number);
     let modalFooter = document.getElementById('modalFooter' + number);
     if (answerFlag == false) {
-        answerBody.style.display = 'block';
+        $('#collapse' + number).collapse('show');
         modalFooter.style.display = 'block';
         answerFlag = true;
     }
