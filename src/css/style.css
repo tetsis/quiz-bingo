@@ -20,13 +20,15 @@ body {
 }
 
 .btn_main {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     font-size: 30px;
+    padding: 0;
+    margin: 1px;
 }
 
 .btn_answer {
-    font-size: 30px;
+    font-size: 20px;
     margin: 20px auto;
     display: block;
 }
