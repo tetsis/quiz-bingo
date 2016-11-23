@@ -120,7 +120,6 @@ function clickButton(number) {
     let modalFooter = document.getElementById('modalFooter' + number);
     if (flag[number] == false) {
         modalFooter.style.display = 'none';
-        flag[number] = true;
         answerFlag = false;
         $('#collapse' + number).collapse('hide');
         $('#quiz' + number).modal('show');
@@ -146,6 +145,7 @@ function clickMistake(number) {
     let button = document.getElementById('button' + number);
     button.className = 'btn btn-raised btn-warning btn_main';
     $('#quiz' + number).modal('hide');
+    flag[number] = true;
 }
 
 function clickCorrect(number) {
@@ -153,6 +153,5 @@ function clickCorrect(number) {
     let button = document.getElementById('button' + number);
     button.className = 'btn btn-raised btn-info btn_main';
     $('#quiz' + number).modal('hide');
+    flag[number] = true;
 }
-
-
