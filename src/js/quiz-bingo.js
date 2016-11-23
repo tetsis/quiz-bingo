@@ -1,6 +1,7 @@
-
 let maxNumber = 75;
 let flag = Array();
+let quizAndAnswer = Array();
+let quizCounter = 0;
 
 window.addEventListener('load',
     function (event) {
@@ -12,6 +13,7 @@ window.addEventListener('load',
         for (let i = 1; i <= maxNumber; i++) {
             flag[i] = false;
         }
+        quizAndAnswer = getCSV('quiz.csv');
 
         //ボタン生成
         let buttons = document.getElementById('buttons');
@@ -65,6 +67,7 @@ window.addEventListener('load',
             modalHeader.appendChild(header);
             modalContent.appendChild(modalHeader);
 
+            quizBody.id = 'quizBody' + i;
             quizBody.className = 'well sentence';
             quizBody.innerHTML = 'No.' + i + ' quiz sentence is written here. Once you know the answer to this quiz, please click ANSWER button.';
             modalBody.appendChild(quizBody);
@@ -116,15 +119,16 @@ function clickStart() {
 function clickButton(number) {
     console.log(number);
     let button = document.getElementById('button' + number);
+    let quizBody = document.getElementById('quizBody' + number);
+    let answerBody = document.getElementById('answerBody' + number);
     let modalFooter = document.getElementById('modalFooter' + number);
     if (flag[number] == false) {
+        quizBody.innerHTML = quizAndAnswer[quizCounter][0];
+        answerBody.innerHTML = quizAndAnswer[quizCounter][1];
+        quizCounter++;
         modalFooter.style.display = 'none';
         $('#collapse' + number).collapse('hide');
         $('#quiz' + number).modal('show');
-    }
-    else {
-        button.className = 'btn btn-raised btn-default btn_quiz';
-        flag[number] = false;
     }
 }
 
@@ -149,4 +153,21 @@ function clickCorrect(number) {
     button.className = 'btn btn-raised btn-info btn_quiz';
     $('#quiz' + number).modal('hide');
     flag[number] = true;
+}
+
+function getCSV(filename) {
+    console.log('getCSV');
+    let result = new Array();
+    let req = new XMLHttpRequest();
+    let lines = new Array();
+    req.open("get", filename, false);
+    req.send(null);
+    lines = req.responseText.split('\n');
+    for (let i = 0; i < lines.length; i++) {
+        let cells = lines[i].split(",");
+        if( cells.length != 1 ) {
+            result.push(cells);
+        }
+    }
+    return result;
 }
