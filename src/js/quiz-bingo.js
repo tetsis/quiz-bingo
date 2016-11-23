@@ -84,14 +84,14 @@ window.addEventListener('load',
 
             mistakeButton.type = 'button';
             mistakeButton.id = 'mistakeButton' + i;
-            mistakeButton.className = 'btn btn-raised btn-default btn_result';
+            mistakeButton.className = 'btn btn-default btn_result';
             mistakeButton.innerHTML = 'MISTAKE';
             mistakeButton.addEventListener('click', function(){clickMistake(i)}, false);
             modalFooter.appendChild(mistakeButton);
 
             correctButton.type = 'button';
             correctButton.id = 'correctButton' + i;
-            correctButton.className = 'btn btn-raised btn-primary btn_result';
+            correctButton.className = 'btn btn-primary btn_result';
             correctButton.innerHTML = 'CORRECT';
             correctButton.addEventListener('click', function(){clickCorrect(i)}, false);
             modalFooter.appendChild(correctButton);
