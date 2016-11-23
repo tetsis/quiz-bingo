@@ -1,7 +1,6 @@
 
 let maxNumber = 75;
 let flag = Array();
-let answerFlag = false;
 
 window.addEventListener('load',
     function (event) {
@@ -120,7 +119,6 @@ function clickButton(number) {
     let modalFooter = document.getElementById('modalFooter' + number);
     if (flag[number] == false) {
         modalFooter.style.display = 'none';
-        answerFlag = false;
         $('#collapse' + number).collapse('hide');
         $('#quiz' + number).modal('show');
     }
@@ -133,11 +131,8 @@ function clickButton(number) {
 function clickAnswer(number) {
     console.log('clickAnswer');
     let modalFooter = document.getElementById('modalFooter' + number);
-    if (answerFlag == false) {
         $('#collapse' + number).collapse('show');
         modalFooter.style.display = 'block';
-        answerFlag = true;
-    }
 }
 
 function clickMistake(number) {
