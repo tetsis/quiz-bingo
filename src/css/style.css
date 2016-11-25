@@ -13,6 +13,11 @@ body {
 
 #btnStart {
     font-size: 60px;
+    position: relative;
+}
+
+#inputCSV {
+    display: none;
 }
 
 #buttons {

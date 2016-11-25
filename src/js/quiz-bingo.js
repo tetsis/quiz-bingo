@@ -1,4 +1,4 @@
-let maxNumber = 75;
+let maxNumber = 0;
 let flag = Array();
 let quizAndAnswer = Array();
 let quizCounter = 0;
@@ -10,124 +10,140 @@ window.addEventListener('load',
         document.getElementById('start').style.display = 'block';
         document.getElementById('running').style.display = 'none';
         document.getElementById('btnStart').addEventListener('click', clickStart, false);
-        for (let i = 1; i <= maxNumber; i++) {
-            flag[i] = false;
-        }
-        quizAndAnswer = getCSV('quiz.csv');
+        document.getElementById('inputCSV').addEventListener('change', changeInputCSV, false);
 
-        //ボタン生成
-        let buttons = document.getElementById('buttons');
-        for (let i = 0; i < (maxNumber/10); i++) {
-            let tr = document.createElement('tr');
-            for (let j = 1; j <= 10; j++) {
-                let number = i * 10 + j;
-                let td = document.createElement('td');
-                let button = document.createElement('button');
-                if (number > maxNumber) {
-                    break;
-                }
-                button.type = 'button';
-                button.id = 'button' + number;
-                button.className = 'btn btn-raised btn-outline-default waves-effect btn_quiz';
-                button.innerHTML = number;
-                button.addEventListener('click', function(){clickButton(number)}, false);
-                td.appendChild(button);
-                tr.appendChild(td);
-            }
-            buttons.appendChild(tr);
-        }
-
-        //クイズ生成
-        let quizzes = document.getElementById('quizzes');
-        for (let i = 1; i <= maxNumber; i++) {
-            let quiz = document.createElement('div');
-            let modalDialog = document.createElement('div');
-            let modalContent = document.createElement('div');
-            let modalHeader = document.createElement('div');
-            let modalBody = document.createElement('div');
-            let modalFooter = document.createElement('div');
-            let header = document.createElement('h2');
-            let quizBody = document.createElement('div');
-            let answerButton = document.createElement('button');
-            let collapse = document.createElement('div');
-            let answerBody = document.createElement('div');
-            let mistakeButton = document.createElement('button');
-            let correctButton = document.createElement('button');
-            quiz.id = 'quiz' + i;
-            quiz.className = 'modal fade';
-            quiz.tabindex = '-1';
-            modalDialog.className = 'modal-dialog modal-lg';
-            modalContent.className = 'modal-content';
-            modalHeader.className = 'modal-header';
-            modalBody.className = 'modal-body';
-            modalFooter.id = 'modalFooter' + i;
-            modalFooter.className = 'modal-footer';
-
-            header.innerHTML = 'QUIZ No.' + i;
-            modalHeader.appendChild(header);
-            modalContent.appendChild(modalHeader);
-
-            quizBody.id = 'quizBody' + i;
-            quizBody.className = 'well sentence';
-            quizBody.innerHTML = 'No.' + i + ' quiz sentence is written here. Once you know the answer to this quiz, please click ANSWER button.';
-            modalBody.appendChild(quizBody);
-
-            answerButton.type = 'button';
-            answerButton.id = 'answerButton' + i;
-            answerButton.className = 'btn btn-raised btn-success waves-effect btn_answer';
-            answerButton.innerHTML = 'ANSWER';
-            answerButton.addEventListener('click', function(){clickAnswer(i)}, false);
-            modalBody.appendChild(answerButton);
-
-            collapse.id = 'collapse' + i;
-            collapse.className = 'collapse';
-            answerBody.id = 'answerBody' + i;
-            answerBody.className = 'well sentence';
-            answerBody.innerHTML = 'No.' + i + ' answer sentence is written here when ANSWER button is clicked. This section appears using "collapse" function of Material Design for Bootstrap.';
-            collapse.appendChild(answerBody);
-            modalBody.appendChild(collapse);
-            modalContent.appendChild(modalBody);
-
-            mistakeButton.type = 'button';
-            mistakeButton.id = 'mistakeButton' + i;
-            mistakeButton.className = 'btn btn-outline-danger waves-effect btn_result';
-            mistakeButton.innerHTML = 'MISTAKE';
-            mistakeButton.addEventListener('click', function(){clickMistake(i)}, false);
-            modalFooter.appendChild(mistakeButton);
-
-            correctButton.type = 'button';
-            correctButton.id = 'correctButton' + i;
-            correctButton.className = 'btn btn-outline-info waves-effect btn_result';
-            correctButton.innerHTML = 'CORRECT';
-            correctButton.addEventListener('click', function(){clickCorrect(i)}, false);
-            modalFooter.appendChild(correctButton);
-            modalContent.appendChild(modalFooter);
-
-            modalDialog.appendChild(modalContent);
-            quiz.appendChild(modalDialog);
-            quizzes.appendChild(quiz);
-        }
     }
 , false);
 
+function generateButtons() {
+    let buttons = document.getElementById('buttons');
+    for (let i = 0; i < (maxNumber/10); i++) {
+        let tr = document.createElement('tr');
+        for (let j = 1; j <= 10; j++) {
+            let number = i * 10 + j;
+            let td = document.createElement('td');
+            let button = document.createElement('button');
+            if (number > maxNumber) {
+                break;
+            }
+            button.type = 'button';
+            button.id = 'button' + number;
+            button.className = 'btn btn-raised btn-outline-default waves-effect btn_quiz';
+            button.innerHTML = number;
+            button.addEventListener('click', function(){clickButton(number)}, false);
+            td.appendChild(button);
+            tr.appendChild(td);
+        }
+        buttons.appendChild(tr);
+    }
+}
+
+function generateQuizzes() {
+    for (let i = 1; i <= maxNumber; i++) {
+        let quiz = document.createElement('div');
+        let modalDialog = document.createElement('div');
+        let modalContent = document.createElement('div');
+        let modalHeader = document.createElement('div');
+        let modalBody = document.createElement('div');
+        let modalFooter = document.createElement('div');
+        let header = document.createElement('h2');
+        let quizBody = document.createElement('div');
+        let answerButton = document.createElement('button');
+        let collapse = document.createElement('div');
+        let answerBody = document.createElement('div');
+        let mistakeButton = document.createElement('button');
+        let correctButton = document.createElement('button');
+        quiz.id = 'quiz' + i;
+        quiz.className = 'modal fade';
+        quiz.tabindex = '-1';
+        modalDialog.className = 'modal-dialog modal-lg';
+        modalContent.className = 'modal-content';
+        modalHeader.className = 'modal-header';
+        modalBody.className = 'modal-body';
+        modalFooter.id = 'modalFooter' + i;
+        modalFooter.className = 'modal-footer';
+
+        header.innerHTML = 'QUIZ No.' + i;
+        modalHeader.appendChild(header);
+        modalContent.appendChild(modalHeader);
+
+        quizBody.id = 'quizBody' + i;
+        quizBody.className = 'well sentence';
+        quizBody.innerHTML = quizAndAnswer[i - 1][0];
+        modalBody.appendChild(quizBody);
+
+        answerButton.type = 'button';
+        answerButton.id = 'answerButton' + i;
+        answerButton.className = 'btn btn-raised btn-success waves-effect btn_answer';
+        answerButton.innerHTML = 'ANSWER';
+        answerButton.addEventListener('click', function(){clickAnswer(i)}, false);
+        modalBody.appendChild(answerButton);
+
+        collapse.id = 'collapse' + i;
+        collapse.className = 'collapse';
+        answerBody.id = 'answerBody' + i;
+        answerBody.className = 'well sentence';
+        answerBody.innerHTML = quizAndAnswer[i - 1][1];
+        collapse.appendChild(answerBody);
+        modalBody.appendChild(collapse);
+        modalContent.appendChild(modalBody);
+
+        mistakeButton.type = 'button';
+        mistakeButton.id = 'mistakeButton' + i;
+        mistakeButton.className = 'btn btn-outline-danger waves-effect btn_result';
+        mistakeButton.innerHTML = 'MISTAKE';
+        mistakeButton.addEventListener('click', function(){clickMistake(i)}, false);
+        modalFooter.appendChild(mistakeButton);
+
+        correctButton.type = 'button';
+        correctButton.id = 'correctButton' + i;
+        correctButton.className = 'btn btn-outline-info waves-effect btn_result';
+        correctButton.innerHTML = 'CORRECT';
+        correctButton.addEventListener('click', function(){clickCorrect(i)}, false);
+        modalFooter.appendChild(correctButton);
+        modalContent.appendChild(modalFooter);
+
+        modalDialog.appendChild(modalContent);
+        quiz.appendChild(modalDialog);
+        quizzes.appendChild(quiz);
+    }
+}
+
 function clickStart() {
     console.log('clickStart');
-    document.getElementById('start').style.display = 'none';
-    document.getElementById('running').style.display = 'block';
+    let file = document.getElementById('inputCSV');
+    file.click();
+}
+
+function changeInputCSV(event) {
+    console.log('changeInputCSV');
+    let file = event.target.files[0];
+    let render = new FileReader();
+
+    render.onload = function(event) {
+        quizAndAnswer = getCSV(render.result);
+        maxNumber = quizAndAnswer.length;
+        for (let i = 1; i <= maxNumber; i++) {
+            flag[i] = false;
+        }
+        //ボタン生成
+        generateButtons();
+        //クイズ生成
+        generateQuizzes();
+        document.getElementById('start').style.display = 'none';
+        document.getElementById('running').style.display = 'block';
+    }
+
+    render.readAsText(file, "Shift_JIS");
 }
 
 function clickButton(number) {
-    console.log(number);
+    console.log('clickButton');
     let button = document.getElementById('button' + number);
     let quizBody = document.getElementById('quizBody' + number);
     let answerBody = document.getElementById('answerBody' + number);
     let modalFooter = document.getElementById('modalFooter' + number);
     if (flag[number] == false) {
-        if (quizAndAnswer.length > quizCounter) {
-            quizBody.innerHTML = quizAndAnswer[quizCounter][0];
-            answerBody.innerHTML = quizAndAnswer[quizCounter][1];
-        }
-        quizCounter++;
         modalFooter.style.display = 'none';
         $('#collapse' + number).collapse('hide');
         $('#quiz' + number).modal('show');
@@ -157,18 +173,14 @@ function clickCorrect(number) {
     flag[number] = true;
 }
 
-function getCSV(filename) {
+function getCSV(data) {
     console.log('getCSV');
     let result = new Array();
-    let req = new XMLHttpRequest();
     let lines = new Array();
-    req.open("get", filename, false);
-    req.overrideMimeType('text/plain; charset=Shift_JIS');
-    req.send(null);
-    lines = req.responseText.split('\n');
+    lines = data.split('\n');
     for (let i = 0; i < lines.length; i++) {
         let cells = lines[i].split(",");
-        if( cells.length != 1 ) {
+        if(cells.length == 2) {
             result.push(cells);
         }
     }
