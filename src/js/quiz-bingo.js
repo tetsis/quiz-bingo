@@ -51,8 +51,7 @@ function generateQuizzes() {
         let answerButton = document.createElement('button');
         let collapse = document.createElement('div');
         let answerBody = document.createElement('div');
-        let mistakeButton = document.createElement('button');
-        let correctButton = document.createElement('button');
+        let okButton = document.createElement('button');
         quiz.id = 'quiz' + i;
         quiz.className = 'modal fade';
         quiz.tabindex = '-1';
@@ -74,7 +73,7 @@ function generateQuizzes() {
 
         answerButton.type = 'button';
         answerButton.id = 'answerButton' + i;
-        answerButton.className = 'btn btn-raised btn-success waves-effect btn_answer';
+        answerButton.className = 'btn btn-raised btn-default waves-effect btn_answer';
         answerButton.innerHTML = 'ANSWER';
         answerButton.addEventListener('click', function(){clickAnswer(i)}, false);
         modalBody.appendChild(answerButton);
@@ -88,19 +87,12 @@ function generateQuizzes() {
         modalBody.appendChild(collapse);
         modalContent.appendChild(modalBody);
 
-        mistakeButton.type = 'button';
-        mistakeButton.id = 'mistakeButton' + i;
-        mistakeButton.className = 'btn btn-outline-danger waves-effect btn_result';
-        mistakeButton.innerHTML = 'MISTAKE';
-        mistakeButton.addEventListener('click', function(){clickMistake(i)}, false);
-        modalFooter.appendChild(mistakeButton);
-
-        correctButton.type = 'button';
-        correctButton.id = 'correctButton' + i;
-        correctButton.className = 'btn btn-outline-info waves-effect btn_result';
-        correctButton.innerHTML = 'CORRECT';
-        correctButton.addEventListener('click', function(){clickCorrect(i)}, false);
-        modalFooter.appendChild(correctButton);
+        okButton.type = 'button';
+        okButton.id = 'okButton' + i;
+        okButton.className = 'btn btn-outline-default waves-effect btn_result';
+        okButton.innerHTML = 'OK';
+        okButton.addEventListener('click', function(){clickOk(i)}, false);
+        modalFooter.appendChild(okButton);
         modalContent.appendChild(modalFooter);
 
         modalDialog.appendChild(modalContent);
@@ -153,24 +145,16 @@ function clickButton(number) {
 function clickAnswer(number) {
     console.log('clickAnswer');
     let modalFooter = document.getElementById('modalFooter' + number);
-        $('#collapse' + number).collapse('show');
-        modalFooter.style.display = 'block';
-}
-
-function clickMistake(number) {
-    console.log('clickMistake');
+    $('#collapse' + number).collapse('show');
+    modalFooter.style.display = 'block';
     let button = document.getElementById('button' + number);
-    button.className = 'btn btn-raised btn-danger waves-effect btn_quiz';
-    $('#quiz' + number).modal('hide');
+    button.className = 'btn btn-raised btn-default waves-effect btn_quiz';
     flag[number] = true;
 }
 
-function clickCorrect(number) {
-    console.log('clickCorrect');
-    let button = document.getElementById('button' + number);
-    button.className = 'btn btn-raised btn-info waves-effect btn_quiz';
+function clickOk(number) {
+    console.log('clickOk');
     $('#quiz' + number).modal('hide');
-    flag[number] = true;
 }
 
 function getCSV(data) {
