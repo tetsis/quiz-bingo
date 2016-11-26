@@ -3,7 +3,7 @@ let flag = Array();
 let quizAndAnswer = Array();
 let quizAndAnswerAndGenre = Array();
 let quizCounter = 0;
-let genreTemplate = ['pink', 'purple', 'indigo', 'cyan', 'light-green', 'yellow', 'amber', 'deep-orange', 'brown', 'blue-grey', 'dark-green'];
+let genreTemplate = ['pink', 'indigo', 'dark-green', 'amber', 'cyan', 'light-green', 'yellow', 'purple', 'deep-orange', 'brown', 'blue-grey'];
 let usedGenreList = new Array();
 
 window.addEventListener('load',
