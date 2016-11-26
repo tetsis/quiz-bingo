@@ -24,12 +24,29 @@ body {
     margin: 0 auto;
 }
 
+#genres {
+    text-align: left;
+    margin: 0 30px;
+}
+
+.td_genre {
+    padding: 0 10px;
+}
+
 .btn_quiz {
     width: 80px;
     height: 80px;
     font-size: 30px;
     padding: 0;
     margin: 1px;
+}
+
+.btn_quiz_before_answer {
+    border-radius: 40px;
+}
+
+.btn_quiz_after_answer {
+    border-radius: 0px;
 }
 
 .btn_answer {

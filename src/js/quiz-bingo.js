@@ -1,7 +1,10 @@
 let maxNumber = 0;
 let flag = Array();
 let quizAndAnswer = Array();
+let quizAndAnswerAndGenre = Array();
 let quizCounter = 0;
+let genreTemplate = ['pink', 'purple', 'indigo', 'cyan', 'light-green', 'yellow', 'amber', 'deep-orange', 'brown', 'blue-grey', 'dark-green'];
+let usedGenreList = new Array();
 
 window.addEventListener('load',
     function (event) {
@@ -11,7 +14,6 @@ window.addEventListener('load',
         document.getElementById('running').style.display = 'none';
         document.getElementById('btnStart').addEventListener('click', clickStart, false);
         document.getElementById('inputCSV').addEventListener('change', changeInputCSV, false);
-
     }
 , false);
 
@@ -28,7 +30,19 @@ function generateButtons() {
             }
             button.type = 'button';
             button.id = 'button' + number;
-            button.className = 'btn btn-raised btn-outline-default waves-effect btn_quiz';
+            button.className = 'btn btn-raised waves-effect btn_quiz btn_quiz_before_answer';
+            if (quizAndAnswerAndGenre[number - 1].length >= 2) {
+                if (quizAndAnswerAndGenre[number - 1][2].match(/\S/g) !== null) {
+                    for (let k = 0; k < usedGenreList.length; k++) {
+                        if (quizAndAnswerAndGenre[number - 1][2] == usedGenreList[k]) {
+                            button.className += ' btn-' + genreTemplate[k];
+                        }
+                    }
+                }
+                else {
+                    button.className += ' btn-default';
+                }
+            }
             button.innerHTML = number;
             button.addEventListener('click', function(){clickButton(number)}, false);
             td.appendChild(button);
@@ -39,6 +53,7 @@ function generateButtons() {
 }
 
 function generateQuizzes() {
+    let quizzes = document.getElementById('quizzes');
     for (let i = 1; i <= maxNumber; i++) {
         let quiz = document.createElement('div');
         let modalDialog = document.createElement('div');
@@ -68,7 +83,7 @@ function generateQuizzes() {
 
         quizBody.id = 'quizBody' + i;
         quizBody.className = 'well sentence';
-        quizBody.innerHTML = quizAndAnswer[i - 1][0];
+        quizBody.innerHTML = quizAndAnswerAndGenre[i - 1][0];
         modalBody.appendChild(quizBody);
 
         answerButton.type = 'button';
@@ -82,7 +97,7 @@ function generateQuizzes() {
         collapse.className = 'collapse';
         answerBody.id = 'answerBody' + i;
         answerBody.className = 'well sentence';
-        answerBody.innerHTML = quizAndAnswer[i - 1][1];
+        answerBody.innerHTML = quizAndAnswerAndGenre[i - 1][1];
         collapse.appendChild(answerBody);
         modalBody.appendChild(collapse);
         modalContent.appendChild(modalBody);
@@ -101,6 +116,35 @@ function generateQuizzes() {
     }
 }
 
+function generateGenres() {
+    let genres = document.getElementById('genres');
+    let table = document.createElement('table');
+    for (let i = 0; i < usedGenreList.length; i++) {
+        let tr = document.createElement('tr');
+        let tdButton = document.createElement('td');
+        let tdGenre = document.createElement('td');
+        let button = document.createElement('button');
+        let genre = document.createElement('div');
+
+        tdButton.className = 'td_genre';
+        tdGenre.className = 'td_genre';
+
+        button.type = 'button';
+        button.className = 'btn waves-effect btn_quiz btn_quiz_before_answer';
+        button.className += ' btn-' + genreTemplate[i];
+        tdButton.appendChild(button);
+        tr.appendChild(tdButton);
+
+        genre.className = 'sentence';
+        genre.innerHTML = ' : ' + usedGenreList[i];
+        tdGenre.appendChild(genre);
+        tr.appendChild(tdGenre);
+
+        table.appendChild(tr);
+    }
+    genres.appendChild(table);
+}
+
 function clickStart() {
     console.log('clickStart');
     let file = document.getElementById('inputCSV');
@@ -113,8 +157,13 @@ function changeInputCSV(event) {
     let render = new FileReader();
 
     render.onload = function(event) {
-        quizAndAnswer = getCSV(render.result);
-        maxNumber = quizAndAnswer.length;
+        quizAndAnswerAndGenre = getCSV(render.result);
+        if (quizAndAnswerAndGenre === null) {
+            alert('クイズファイルのフォーマットが正しくありません。');
+            return;
+        }
+        //maxNumber = quizAndAnswer.length;
+        maxNumber = quizAndAnswerAndGenre.length;
         for (let i = 1; i <= maxNumber; i++) {
             flag[i] = false;
         }
@@ -122,6 +171,8 @@ function changeInputCSV(event) {
         generateButtons();
         //クイズ生成
         generateQuizzes();
+        //ジャンル生成
+        generateGenres();
         document.getElementById('start').style.display = 'none';
         document.getElementById('running').style.display = 'block';
     }
@@ -148,7 +199,7 @@ function clickAnswer(number) {
     $('#collapse' + number).collapse('show');
     modalFooter.style.display = 'block';
     let button = document.getElementById('button' + number);
-    button.className = 'btn btn-raised btn-default waves-effect btn_quiz';
+    button.className = 'btn btn-raised btn-outline-default waves-effect btn_quiz btn_quiz_after_answer';
     flag[number] = true;
 }
 
@@ -164,7 +215,24 @@ function getCSV(data) {
     lines = data.split('\n');
     for (let i = 0; i < lines.length; i++) {
         let cells = lines[i].split(",");
-        if(cells.length == 2) {
+        if(cells.length >= 2) {
+            if (cells.length >= 3) {
+                if (cells[2].match(/\S/g) !== null) {
+                    if (usedGenreList.length == 0) {
+                        usedGenreList.push(cells[2]);
+                    }
+                    else {
+                        for (let j = 0; j < usedGenreList.length; j++) {
+                            if (cells[2] == usedGenreList[j]) {
+                                break;
+                            }
+                            else if (j == usedGenreList.length - 1) {
+                                usedGenreList.push(cells[2]);
+                            }
+                        }
+                    }
+                }
+            }
             result.push(cells);
         }
     }
