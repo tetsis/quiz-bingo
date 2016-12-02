@@ -62,6 +62,7 @@ function generateQuizzes() {
         let modalBody = document.createElement('div');
         let modalFooter = document.createElement('div');
         let header = document.createElement('h2');
+        let closeButton = document.createElement('button');
         let quizBody = document.createElement('div');
         let answerButton = document.createElement('button');
         let collapse = document.createElement('div');
@@ -135,7 +136,7 @@ function generateGenres() {
         tdButton.appendChild(button);
         tr.appendChild(tdButton);
 
-        genre.className = 'sentence';
+        genre.className = 'txt_genre';
         genre.innerHTML = ' : ' + usedGenreList[i];
         tdGenre.appendChild(genre);
         tr.appendChild(tdGenre);
