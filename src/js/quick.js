@@ -12,7 +12,7 @@ window.addEventListener('load',
         //初期化
         init();
         document.getElementById('btnQuit').addEventListener('click', clickQuit, false);
-        document.getElementById('btnStart').addEventListener('click', clickStart, false);
+        document.getElementById('btnLoadOfQuickStart').addEventListener('click', clickStart, false);
         document.getElementById('inputCSV').addEventListener('change', changeInputCSV, false);
     }
 , false);
