@@ -10,14 +10,21 @@ window.addEventListener('load',
     function (event) {
 
         //初期化
-        document.getElementById('start').style.display = 'block';
-        document.getElementById('running').style.display = 'none';
-        document.getElementById('menu').style.display = 'none';
+        init();
         document.getElementById('btnQuit').addEventListener('click', clickQuit, false);
         document.getElementById('btnStart').addEventListener('click', clickStart, false);
         document.getElementById('inputCSV').addEventListener('change', changeInputCSV, false);
     }
 , false);
+
+function init() {
+        document.getElementById('start').style.display = 'block';
+        document.getElementById('running').style.display = 'none';
+        document.getElementById('menu').style.display = 'none';
+        document.getElementById('buttons').textContent = null;
+        document.getElementById('genres').textContent = null;
+        document.getElementById('quizzes').textContent = null;
+}
 
 function generateButtons() {
     let buttons = document.getElementById('buttons');
@@ -149,12 +156,7 @@ function generateGenres() {
 }
 
 function clickQuit() {
-        document.getElementById('start').style.display = 'block';
-        document.getElementById('running').style.display = 'none';
-        document.getElementById('menu').style.display = 'none';
-        document.getElementById('buttons').textContent = null;
-        document.getElementById('genres').textContent = null;
-        document.getElementById('quizzes').textContent = null;
+    init();
 }
 
 function clickStart() {
