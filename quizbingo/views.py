@@ -10,6 +10,9 @@ def quick(request):
 def make(request):
     return render(request, 'make.html')
 
+#def make_quizes(request):
+
+
 
 ## Viewset class
 

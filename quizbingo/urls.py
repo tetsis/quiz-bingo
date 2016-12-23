@@ -24,5 +24,5 @@ urlpatterns = [
     url(r'make/', views.make, name='make'),
 
     ## API ##
-    url(r'make/quizes/', views.make_quizes, name='make_quizes'),
+    #url(r'make/quizes/', views.make_quizes, name='make_quizes'),
 ]
