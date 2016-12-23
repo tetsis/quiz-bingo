@@ -17,11 +17,11 @@
     </div>
 
     <div>
-        <button type="button" id="btnQuick" class="btn btn-raised btn-default" onclick="location.href='quick.html'">quick start</button>
+        <button type="button" id="btnQuick" class="btn btn-raised btn-default" onclick="location.href='{% url 'quick' %}'">quick start</button>
     </div>
 
     <div>
-        <button type="button" id="btnMake" class="btn btn-raised btn-default" onclick="location.href='make.html'">make your quiz bingo</button>
+        <button type="button" id="btnMake" class="btn btn-raised btn-default" onclick="location.href='{% url 'make' %}'">make your quiz bingo</button>
     </div>
 
     <script type="text/javascript" src="{% static 'js/jquery-3.1.1.min.js' %}"></script>

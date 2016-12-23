@@ -20,5 +20,9 @@ from . import views
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index, name='index'),
-    url(r'^quick/', views.quick, name='quick'),
+    url(r'quick/', views.quick, name='quick'),
+    url(r'make/', views.make, name='make'),
+
+    ## API ##
+    url(r'make/quizes/', views.make_quizes, name='make_quizes'),
 ]
