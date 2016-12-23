@@ -12,6 +12,8 @@ window.addEventListener('load',
         //初期化
         document.getElementById('start').style.display = 'block';
         document.getElementById('running').style.display = 'none';
+        document.getElementById('menu').style.display = 'none';
+        document.getElementById('btnQuit').addEventListener('click', clickQuit, false);
         document.getElementById('btnStart').addEventListener('click', clickStart, false);
         document.getElementById('inputCSV').addEventListener('change', changeInputCSV, false);
     }
@@ -146,6 +148,15 @@ function generateGenres() {
     genres.appendChild(table);
 }
 
+function clickQuit() {
+        document.getElementById('start').style.display = 'block';
+        document.getElementById('running').style.display = 'none';
+        document.getElementById('menu').style.display = 'none';
+        document.getElementById('buttons').textContent = null;
+        document.getElementById('genres').textContent = null;
+        document.getElementById('quizzes').textContent = null;
+}
+
 function clickStart() {
     console.log('clickStart');
     let file = document.getElementById('inputCSV');
@@ -176,6 +187,7 @@ function changeInputCSV(event) {
         generateGenres();
         document.getElementById('start').style.display = 'none';
         document.getElementById('running').style.display = 'block';
+        document.getElementById('menu').style.display = 'block';
     }
 
     render.readAsText(file, "Shift_JIS");

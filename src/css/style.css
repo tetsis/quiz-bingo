@@ -11,6 +11,13 @@ body {
     text-align: center;
 }
 
+#menu {
+}
+
+#btnQuit {
+    font-size: 20px;
+}
+
 #btnStart {
     font-size: 60px;
     position: relative;
