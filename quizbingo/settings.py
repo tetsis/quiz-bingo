@@ -25,7 +25,7 @@ SECRET_KEY = 'm*$jhv7=(is)n80#^%^k1^k!y753tp1o!dhc7*eu=s=cvj7_jd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.33.254',]
+ALLOWED_HOSTS = ['192.168.33.254','127.0.0.1',]
 
 
 # Application definition
@@ -119,6 +119,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-TATICFILES_DIRS = [
+STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
