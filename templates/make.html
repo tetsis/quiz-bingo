@@ -16,37 +16,17 @@
         <h1 id="title">QUIZ BINGO</h1>
     </div>
 
-    <div id="start">
+    <div id="load">
         <input type="file" id="inputCSV" accept=".csv"/>
         <button type="button" id="btnLoad" class="btn btn-raised btn-default">load quiz file</button>
     </div>
 
-    <div id="running">
-        <table align="center">
-            <tr>
-                <td>
-                    <table id="buttons">
-                    </table>
-                </td>
-                <td>
-                    <div id="genres">
-                    </div>
-                </td>
-            </tr>
-        </table>
-
-        <div id="quizzes">
-        </div>
-
-        <div id="menu">
-            <button type="button" id="btnQuit" class="btn btn-raised btn-default">QUIT</button>
-        </div>
-
+    <div id="result">
     </div>
 
     <script type="text/javascript" src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/quick.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/make.js' %}"></script>
 </body>
 </html>
