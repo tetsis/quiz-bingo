@@ -16,8 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from . import views
-
-from quiz.urls import router as quiz_router
+from api.urls import router as api_router
 
 
 urlpatterns = [
@@ -26,5 +25,5 @@ urlpatterns = [
     url(r'quick/', views.quick, name='quick'),
     url(r'make/', views.make, name='make'),
     #define quiz REST API
-    url(r'api/',include(quiz_router.urls)),
+    url(r'api/',include(api_router.urls)),
 ]
