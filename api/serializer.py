@@ -10,4 +10,4 @@ class quizSerializer(serializers.ModelSerializer):
 class bingoSerializer(serializers.ModelSerializer):
     class Meta:
         model = bingo
-        fields = ('hash')
+        fields = ('name', 'display_name')
