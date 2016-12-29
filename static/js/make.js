@@ -47,10 +47,43 @@ function changeInputCSV(event) {
         json = JSON.stringify(quizAndAnswerAndGenre);
 
         console.log(json);
+
+        var xhr = XMLHttpRequestCreate();
+        xhr.open("GET" , "http://192.168.33.254:8000/api/bingos/?format=json");
+        xhr.responseType = "json";
+        xhr.onreadystatechange = function(event) {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    console.log("success");
+                    console.log(xhr.response);
+                }
+                else {
+                    console.log("Error");
+                }
+            }
+        }
+        xhr.send();
     }
 
     render.readAsText(file, "Shift_JIS");
 
+}
+
+function XMLHttpRequestCreate(){
+    try{
+        return new XMLHttpRequest();
+    }catch(e){}
+    try{
+        return new ActiveXObject('MSXML2.XMLHTTP.6.0');
+    }catch(e){}
+    try{
+        return new ActiveXObject('MSXML2.XMLHTTP.3.0');
+    }catch(e){}
+    try{
+        return new ActiveXObject('MSXML2.XMLHTTP');
+    }catch(e){}
+
+    return null;
 }
 
 function getCSV(data) {
