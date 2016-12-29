@@ -71,7 +71,7 @@ function generateQuizzes() {
         let modalFooter = document.createElement('div');
         let header = document.createElement('h2');
         let closeButton = document.createElement('button');
-        let quizBody = document.createElement('div');
+        let questionBody = document.createElement('div');
         let answerButton = document.createElement('button');
         let collapse = document.createElement('div');
         let answerBody = document.createElement('div');
@@ -90,10 +90,10 @@ function generateQuizzes() {
         modalHeader.appendChild(header);
         modalContent.appendChild(modalHeader);
 
-        quizBody.id = 'quizBody' + i;
-        quizBody.className = 'well sentence';
-        quizBody.innerHTML = questionAndAnswerAndGenre[i - 1][0];
-        modalBody.appendChild(quizBody);
+        questionBody.id = 'questionBody' + i;
+        questionBody.className = 'well sentence';
+        questionBody.innerHTML = questionAndAnswerAndGenre[i - 1][0];
+        modalBody.appendChild(questionBody);
 
         answerButton.type = 'button';
         answerButton.id = 'answerButton' + i;
@@ -196,7 +196,7 @@ function changeInputCSV(event) {
 function clickButton(number) {
     console.log('clickButton');
     let button = document.getElementById('button' + number);
-    let quizBody = document.getElementById('quizBody' + number);
+    let questionBody = document.getElementById('questionBody' + number);
     let answerBody = document.getElementById('answerBody' + number);
     let modalFooter = document.getElementById('modalFooter' + number);
     if (flag[number] == false) {
