@@ -67,8 +67,8 @@ function changeInputCSV(event) {
             genre.innerHTML = quizAndAnswerAndGenre[i][2];
             button.type = 'button';
             button.id = 'button' + (i+1);
-            button.className = 'btn btn-raised waves-effect btn-primary';
-            button.innerHTML = 'datail';
+            button.className = 'btn btn-raised waves-effect btn-primary btn-sm';
+            button.innerHTML = 'edit';
             button.addEventListener('click', function(){clickDetail(i+1)}, false);
             edit.appendChild(button);
 
