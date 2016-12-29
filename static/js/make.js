@@ -57,17 +57,27 @@ function changeInputCSV(event) {
             let question = document.createElement('td');
             let answer = document.createElement('td');
             let genre = document.createElement('td');
+            let edit = document.createElement('td');
+            let button = document.createElement('button');
 
             number.scope = 'row';
             number.innerHTML = i + 1;
             question.innerHTML = quizAndAnswerAndGenre[i][0];
             answer.innerHTML = quizAndAnswerAndGenre[i][1];
             genre.innerHTML = quizAndAnswerAndGenre[i][2];
+            button.type = 'button';
+            button.id = 'button' + (i+1);
+            button.className = 'btn btn-raised waves-effect btn-primary';
+            button.innerHTML = 'datail';
+            button.addEventListener('click', function(){clickDetail(i+1)}, false);
+            edit.appendChild(button);
 
             tr.appendChild(number);
             tr.appendChild(question);
             tr.appendChild(answer);
             tr.appendChild(genre);
+            tr.appendChild(edit);
+
             quizzes.appendChild(tr);
         }
         document.getElementById('load').style.display = 'none';
