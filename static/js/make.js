@@ -11,14 +11,19 @@ window.addEventListener('load',
         //初期化
         init();
         document.getElementById('btnLoad').addEventListener('click', clickStart, false);
+        document.getElementById('btnDecide').addEventListener('click', clickDecide, false);
         document.getElementById('inputCSV').addEventListener('change', changeInputCSV, false);
     }
 , false);
 
 function init() {
         document.getElementById('load').style.display = 'block';
-        document.getElementById('result').style.display = 'none';
-        document.getElementById('result').textContent = null;
+        document.getElementById('confirm').style.display = 'none';
+        document.getElementById('quizzes').textContent = null;
+        flag = Array();
+        quizAndAnswerAndGenre = Array();
+        quizCounter = 0;
+        usedGenreList = Array();
 }
 
 function clickStart() {
@@ -44,6 +49,53 @@ function changeInputCSV(event) {
             flag[i] = false;
         }
 
+        let quizzes = document.getElementById('quizzes');
+        for (let i = 0; i < maxNumber; i++) {
+            let tr = document.createElement('tr');
+
+            let number = document.createElement('th');
+            let question = document.createElement('td');
+            let answer = document.createElement('td');
+            let genre = document.createElement('td');
+
+            number.scope = 'row';
+            number.innerHTML = i + 1;
+            question.innerHTML = quizAndAnswerAndGenre[i][0];
+            answer.innerHTML = quizAndAnswerAndGenre[i][1];
+            genre.innerHTML = quizAndAnswerAndGenre[i][2];
+
+            tr.appendChild(number);
+            tr.appendChild(question);
+            tr.appendChild(answer);
+            tr.appendChild(genre);
+            quizzes.appendChild(tr);
+        }
+        document.getElementById('load').style.display = 'none';
+        document.getElementById('confirm').style.display = 'block';
+
+
+    }
+    render.readAsText(file, "Shift_JIS");
+}
+
+function XMLHttpRequestCreate(){
+    try{
+        return new XMLHttpRequest();
+    }catch(e){}
+    try{
+        return new ActiveXObject('MSXML2.XMLHTTP.6.0');
+    }catch(e){}
+    try{
+        return new ActiveXObject('MSXML2.XMLHTTP.3.0');
+    }catch(e){}
+    try{
+        return new ActiveXObject('MSXML2.XMLHTTP');
+    }catch(e){}
+
+    return null;
+}
+
+function clickDecide() {
         json = JSON.stringify(quizAndAnswerAndGenre);
 
         console.log(json);
@@ -63,27 +115,7 @@ function changeInputCSV(event) {
             }
         }
         xhr.send();
-    }
-
-    render.readAsText(file, "Shift_JIS");
-
-}
-
-function XMLHttpRequestCreate(){
-    try{
-        return new XMLHttpRequest();
-    }catch(e){}
-    try{
-        return new ActiveXObject('MSXML2.XMLHTTP.6.0');
-    }catch(e){}
-    try{
-        return new ActiveXObject('MSXML2.XMLHTTP.3.0');
-    }catch(e){}
-    try{
-        return new ActiveXObject('MSXML2.XMLHTTP');
-    }catch(e){}
-
-    return null;
+    
 }
 
 function getCSV(data) {

@@ -21,7 +21,20 @@
         <button type="button" id="btnLoad" class="btn btn-raised btn-default">load quiz file</button>
     </div>
 
-    <div id="result">
+    <div id="confirm">
+        <table class="table table-hover table-striped" align="center">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Question</th>
+                    <th>Answer</th>
+                    <th>Genre</th>
+                </tr>
+            </thead>
+            <tbody id="quizzes">
+            </tbody>
+        </table>
+        <button type="button" id="btnDecide" class="btn btn-raised btn-default">decide</button>
     </div>
 
     <script type="text/javascript" src="{% static 'js/jquery-3.1.1.min.js' %}"></script>

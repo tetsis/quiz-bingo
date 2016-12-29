@@ -1,7 +1,6 @@
 let maxNumber = 0;
 let flag = Array();
-let quizAndAnswer = Array();
-let quizAndAnswerAndGenre = Array();
+let questionAndAnswerAndGenre = Array();
 let quizCounter = 0;
 let genreTemplate = ['pink', 'indigo', 'dark-green', 'amber', 'cyan', 'light-green', 'yellow', 'purple', 'deep-orange', 'brown', 'blue-grey'];
 let usedGenreList = new Array();
@@ -40,10 +39,10 @@ function generateButtons() {
             button.type = 'button';
             button.id = 'button' + number;
             button.className = 'btn btn-raised waves-effect btn_quiz btn_quiz_before_answer';
-            if (quizAndAnswerAndGenre[number - 1].length >= 2) {
-                if (quizAndAnswerAndGenre[number - 1][2].match(/\S/g) !== null) {
+            if (questionAndAnswerAndGenre[number - 1].length >= 2) {
+                if (questionAndAnswerAndGenre[number - 1][2].match(/\S/g) !== null) {
                     for (let k = 0; k < usedGenreList.length; k++) {
-                        if (quizAndAnswerAndGenre[number - 1][2] == usedGenreList[k]) {
+                        if (questionAndAnswerAndGenre[number - 1][2] == usedGenreList[k]) {
                             button.className += ' btn-' + genreTemplate[k];
                         }
                     }
@@ -93,7 +92,7 @@ function generateQuizzes() {
 
         quizBody.id = 'quizBody' + i;
         quizBody.className = 'well sentence';
-        quizBody.innerHTML = quizAndAnswerAndGenre[i - 1][0];
+        quizBody.innerHTML = questionAndAnswerAndGenre[i - 1][0];
         modalBody.appendChild(quizBody);
 
         answerButton.type = 'button';
@@ -107,7 +106,7 @@ function generateQuizzes() {
         collapse.className = 'collapse';
         answerBody.id = 'answerBody' + i;
         answerBody.className = 'well sentence';
-        answerBody.innerHTML = quizAndAnswerAndGenre[i - 1][1];
+        answerBody.innerHTML = questionAndAnswerAndGenre[i - 1][1];
         collapse.appendChild(answerBody);
         modalBody.appendChild(collapse);
         modalContent.appendChild(modalBody);
@@ -171,13 +170,12 @@ function changeInputCSV(event) {
     let render = new FileReader();
 
     render.onload = function(event) {
-        quizAndAnswerAndGenre = getCSV(render.result);
-        if (quizAndAnswerAndGenre === null) {
+        questionAndAnswerAndGenre = getCSV(render.result);
+        if (questionAndAnswerAndGenre === null) {
             alert('クイズファイルのフォーマットが正しくありません。');
             return;
         }
-        //maxNumber = quizAndAnswer.length;
-        maxNumber = quizAndAnswerAndGenre.length;
+        maxNumber = questionAndAnswerAndGenre.length;
         for (let i = 1; i <= maxNumber; i++) {
             flag[i] = false;
         }
