@@ -1,6 +1,6 @@
 let maxNumber = 0;
 let flag = Array();
-let quizAndAnswerAndGenre = Array();
+let questionAndAnswerAndGenre = Array();
 let quizCounter = 0;
 let genreTemplate = ['pink', 'indigo', 'dark-green', 'amber', 'cyan', 'light-green', 'yellow', 'purple', 'deep-orange', 'brown', 'blue-grey'];
 let usedGenreList = new Array();
@@ -32,7 +32,7 @@ function init() {
         document.getElementById('confirm').style.display = 'none';
         document.getElementById('quizzes').textContent = null;
         flag = Array();
-        quizAndAnswerAndGenre = Array();
+        questionAndAnswerAndGenre = Array();
         quizCounter = 0;
         usedGenreList = Array();
 }
@@ -50,19 +50,19 @@ function changeInputCSV(event) {
     let json;
 
     render.onload = function(event) {
-        quizAndAnswerAndGenre = getCSV(render.result);
-        if (quizAndAnswerAndGenre === null) {
+        questionAndAnswerAndGenre = getCSV(render.result);
+        if (questionAndAnswerAndGenre === null) {
             alert('クイズファイルのフォーマットが正しくありません。');
             return;
         }
-        maxNumber = quizAndAnswerAndGenre.length;
+        maxNumber = questionAndAnswerAndGenre.length;
         for (let i = 1; i <= maxNumber; i++) {
             flag[i] = false;
         }
 
         let quizzes = document.getElementById('quizzes');
         for (let i = 0; i < maxNumber; i++) {
-            let tr = createQuizRow(i + 1, quizAndAnswerAndGenre[i][0], quizAndAnswerAndGenre[i][1], quizAndAnswerAndGenre[i][2]);
+            let tr = createQuizRow(i + 1, questionAndAnswerAndGenre[i][0], questionAndAnswerAndGenre[i][1], questionAndAnswerAndGenre[i][2]);
 
             quizzes.appendChild(tr);
         }
@@ -230,17 +230,9 @@ function updateQuizNumber() {
 
 function clickDelete() {
     console.log('clickDelete');
-    console.log('editQuizNumber = ');
-    console.log(editQuizNumber);
     let tbody = document.getElementById('quizzes');
-    console.log('tbody = ');
-    console.log(tbody);
     let trEdit = tbody.childNodes[editQuizNumber - 1];
-    console.log('trEdit = ');
-    console.log(trEdit);
     tbody.removeChild(trEdit);
-    console.log('tbody = ');
-    console.log(tbody);
     editFlag = false;
     updateQuizNumber();
 
@@ -248,8 +240,21 @@ function clickDelete() {
 }
 
 function clickDecide() {
+    let tbody = document.getElementById('quizzes');
+    let maxNumber = tbody.childElementCount;
+    questionAndAnswerAndGenre = Array();
+    for (let i = 0; i < maxNumber; i++) {
+        let tr = tbody.childNodes[i];
+        let quizNumber = tr.childNodes[0].innerHTML;
+        quizNumber = parseInt(quizNumber, 10);
+        let question = tr.childNodes[1].innerHTML;
+        let answer = tr.childNodes[2].innerHTML;
+        let genre = tr.childNodes[3].innerHTML;
+        let quiz = Array(quizNumber, question, answer, genre);
+        questionAndAnswerAndGenre.push(quiz);
+    }
 
-        json = JSON.stringify(quizAndAnswerAndGenre);
+        json = JSON.stringify(questionAndAnswerAndGenre);
 
         console.log(json);
 
