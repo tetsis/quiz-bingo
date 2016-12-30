@@ -36,6 +36,15 @@ body {
     margin: 0 30px;
 }
 
+.right {
+    text-align: right;
+    margin: 0 30px;
+}
+
+.left {
+    text-align: left;
+}
+
 .td_genre {
     padding: 0 10px;
 }

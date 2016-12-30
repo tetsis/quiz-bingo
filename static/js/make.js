@@ -4,6 +4,8 @@ let quizAndAnswerAndGenre = Array();
 let quizCounter = 0;
 let genreTemplate = ['pink', 'indigo', 'dark-green', 'amber', 'cyan', 'light-green', 'yellow', 'purple', 'deep-orange', 'brown', 'blue-grey'];
 let usedGenreList = new Array();
+let editFlag = false;
+let editQuizNumber = 0;
 
 window.addEventListener('load',
     function (event) {
@@ -11,8 +13,17 @@ window.addEventListener('load',
         //初期化
         init();
         document.getElementById('btnLoad').addEventListener('click', clickStart, false);
-        document.getElementById('btnDecide').addEventListener('click', clickDecide, false);
         document.getElementById('inputCSV').addEventListener('change', changeInputCSV, false);
+        document.getElementById('btnDecide').addEventListener('click', clickDecide, false);
+        document.getElementById('btnAddButton').addEventListener('click', clickAdd, false);
+        document.getElementById('btnAddTop').addEventListener('click', clickAdd, false);
+        document.getElementById('btnAddOrUpdate').addEventListener('click', clickAddOrUpdate, false);
+        document.getElementById('btnDelete').addEventListener('click', clickDelete, false);
+        document.getElementById('mdlSlctQuizNumber').addEventListener('change', checkAddOrUpdate, false);
+        document.getElementById('mdlIptQuestion').addEventListener('change', checkAddOrUpdate, false);
+        document.getElementById('mdlIptAnswer').addEventListener('change', checkAddOrUpdate, false);
+        document.getElementById('txtName').addEventListener('change', checkDecide, false);
+        document.getElementById('txtPassword').addEventListener('change', checkDecide, false);
     }
 , false);
 
@@ -51,32 +62,7 @@ function changeInputCSV(event) {
 
         let quizzes = document.getElementById('quizzes');
         for (let i = 0; i < maxNumber; i++) {
-            let tr = document.createElement('tr');
-
-            let number = document.createElement('th');
-            let question = document.createElement('td');
-            let answer = document.createElement('td');
-            let genre = document.createElement('td');
-            let edit = document.createElement('td');
-            let button = document.createElement('button');
-
-            number.scope = 'row';
-            number.innerHTML = i + 1;
-            question.innerHTML = quizAndAnswerAndGenre[i][0];
-            answer.innerHTML = quizAndAnswerAndGenre[i][1];
-            genre.innerHTML = quizAndAnswerAndGenre[i][2];
-            button.type = 'button';
-            button.id = 'button' + (i+1);
-            button.className = 'btn btn-raised waves-effect btn-primary btn-sm';
-            button.innerHTML = 'edit';
-            button.addEventListener('click', function(){clickDetail(i+1)}, false);
-            edit.appendChild(button);
-
-            tr.appendChild(number);
-            tr.appendChild(question);
-            tr.appendChild(answer);
-            tr.appendChild(genre);
-            tr.appendChild(edit);
+            let tr = createQuizRow(i + 1, quizAndAnswerAndGenre[i][0], quizAndAnswerAndGenre[i][1], quizAndAnswerAndGenre[i][2]);
 
             quizzes.appendChild(tr);
         }
@@ -86,6 +72,36 @@ function changeInputCSV(event) {
 
     }
     render.readAsText(file, "Shift_JIS");
+}
+
+function createQuizRow(quizNumber, question, answer, genre) {
+    let tr = document.createElement('tr');
+    let thQuizNumber = document.createElement('th');
+    let tdQuestion = document.createElement('td');
+    let tdAnswer = document.createElement('td');
+    let tdGenre = document.createElement('td');
+    let edit = document.createElement('td');
+    let button = document.createElement('button');
+
+    thQuizNumber.scope = 'row';
+    thQuizNumber.innerHTML = quizNumber;
+    tdQuestion.innerHTML = question;
+    tdAnswer.innerHTML = answer;
+    tdGenre.innerHTML = genre;
+    button.type = 'button';
+    button.id = 'button' + quizNumber;
+    button.className = 'btn btn-raised waves-effect btn-primary btn-sm';
+    button.innerHTML = 'edit';
+    button.addEventListener('click', function(){clickEdit(this)}, false);
+    edit.appendChild(button);
+
+    tr.appendChild(thQuizNumber);
+    tr.appendChild(tdQuestion);
+    tr.appendChild(tdAnswer);
+    tr.appendChild(tdGenre);
+    tr.appendChild(edit);
+
+    return tr;
 }
 
 function XMLHttpRequestCreate(){
@@ -105,7 +121,134 @@ function XMLHttpRequestCreate(){
     return null;
 }
 
+function clickAdd() {
+    console.log('clickAdd');
+    let select = document.getElementById('mdlSlctQuizNumber');
+    select.textContent = null;
+    let maxNumber = document.getElementById('quizzes').childElementCount;
+    for (let i = 1; i <= (maxNumber + 1); i++) {
+        let option = document.createElement('option');
+        option.innerHTML = i;
+        if (i === (maxNumber + 1)) {
+            option.selected = true;
+        }
+        select.appendChild(option);
+    }
+    document.getElementById('mdlIptQuestion').value = '';
+    document.getElementById('mdlIptAnswer').value = '';
+    document.getElementById('mdlIptGenre').value = '';
+    document.getElementById('btnAddOrUpdate').innerHTML = 'add';
+    document.getElementById('btnAddOrUpdate').disabled = true;
+    document.getElementById('btnDelete').style.display = 'none';
+}
+
+function clickEdit(obj) {
+    console.log('clickEdit: obj = ' + obj);
+    let tr = obj.parentNode.parentNode;
+    let quizNumber = tr.childNodes[0].innerHTML;
+    let question = tr.childNodes[1].innerHTML;
+    let answer = tr.childNodes[2].innerHTML;
+    let genre = tr.childNodes[3].innerHTML;
+    let select = document.getElementById('mdlSlctQuizNumber');
+    let maxNumber = document.getElementById('quizzes').childElementCount;
+    select.textContent = null;
+    quizNumber = parseInt(quizNumber, 10);
+    for (let i = 1; i <= maxNumber; i++) {
+        let option = document.createElement('option');
+        option.innerHTML = i;
+        if (i === quizNumber) {
+            option.selected = true;
+        }
+        select.appendChild(option);
+    }
+    document.getElementById('mdlIptQuestion').value = question;
+    document.getElementById('mdlIptAnswer').value = answer;
+    document.getElementById('mdlIptGenre').value = genre;
+    editFlag = true;
+    editQuizNumber = quizNumber;
+
+    document.getElementById('btnAddOrUpdate').innerHTML = 'update';
+    document.getElementById('btnAddOrUpdate').disabled = true;
+    document.getElementById('btnDelete').style.display = 'inline';
+    $('#modal').modal('show');
+}
+
+function checkAddOrUpdate() {
+    let question = document.getElementById('mdlIptQuestion').value;
+    let answer = document.getElementById('mdlIptAnswer').value;
+    if ((question != "") && (answer != "")) {
+        document.getElementById('btnAddOrUpdate').disabled = false;
+    }
+    else {
+        document.getElementById('btnAddOrUpdate').disabled = true;
+    }
+}
+
+function checkDecide() {
+    let name = document.getElementById('txtName').value;
+    let password = document.getElementById('txtPassword').value;
+    if ((name != "") && (password != "")) {
+        document.getElementById('btnDecide').disabled = false;
+    }
+    else {
+        document.getElementById('btnDecide').disabled = true;
+    }
+}
+
+function clickAddOrUpdate() {
+    console.log('clickAddOrUpdate');
+    let mdlSlctQuizNumber = document.getElementById('mdlSlctQuizNumber').value;
+    let mdlIptQuestion = document.getElementById('mdlIptQuestion').value;
+    let mdlIptAnswer = document.getElementById('mdlIptAnswer').value;
+    let mdlIptGenre = document.getElementById('mdlIptGenre').value;
+    let tbody = document.getElementById('quizzes');
+
+    if (editFlag === true) {
+        let trEdit = tbody.childNodes[editQuizNumber - 1];
+        tbody.removeChild(trEdit);
+        editFlag = false;
+    }
+
+    let tr = tbody.childNodes[mdlSlctQuizNumber - 1];
+    let newTr = createQuizRow(mdlSlctQuizNumber, mdlIptQuestion, mdlIptAnswer, mdlIptGenre);
+
+    tbody.insertBefore(newTr, tr);
+
+    updateQuizNumber();
+
+    $('#modal').modal('hide');
+}
+
+function updateQuizNumber() {
+    console.log('updateQuizNumber');
+    let maxNumber = document.getElementById('quizzes').childElementCount;
+    for (let i = 0; i < maxNumber; i++) {
+        let thQuizNumber = document.getElementById('quizzes').childNodes[i].childNodes[0];
+        thQuizNumber.innerHTML = i + 1;
+    }
+}
+
+function clickDelete() {
+    console.log('clickDelete');
+    console.log('editQuizNumber = ');
+    console.log(editQuizNumber);
+    let tbody = document.getElementById('quizzes');
+    console.log('tbody = ');
+    console.log(tbody);
+    let trEdit = tbody.childNodes[editQuizNumber - 1];
+    console.log('trEdit = ');
+    console.log(trEdit);
+    tbody.removeChild(trEdit);
+    console.log('tbody = ');
+    console.log(tbody);
+    editFlag = false;
+    updateQuizNumber();
+
+    $('#modal').modal('hide');
+}
+
 function clickDecide() {
+
         json = JSON.stringify(quizAndAnswerAndGenre);
 
         console.log(json);
@@ -125,7 +268,6 @@ function clickDecide() {
             }
         }
         xhr.send();
-    
 }
 
 function getCSV(data) {
