@@ -266,6 +266,8 @@ function clickDecide() {
                 if (xhr.status == 200) {
                     console.log("success");
                     console.log(xhr.response);
+                    json = JSON.stringify(xhr.response);
+                    console.log(json);
                 }
                 else {
                     console.log("Error");
