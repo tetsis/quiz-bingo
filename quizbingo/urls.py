@@ -24,6 +24,9 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'quick/', views.quick, name='quick'),
     url(r'make/', views.make, name='make'),
+    url(r'login/', views.login, name='login'),
+    url(r'auth/', views.auth, name='auth'),
+
     #define quiz REST API
     url(r'api/',include(api_router.urls)),
 ]
