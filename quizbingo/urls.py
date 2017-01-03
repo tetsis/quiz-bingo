@@ -22,12 +22,12 @@ from api.urls import router as api_router
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index, name='index'),
-    url(r'quick/', views.quick, name='quick'),
-    url(r'edit/', views.edit, name='edit'),
-    url(r'login/', views.login, name='login'),
-    url(r'register/', views.register, name='register'),
-    url(r'auth/', views.auth, name='auth'),
-    url(r'401/', views.unauthorized, name='401'),
+    url(r'^quick/', views.quick, name='quick'),
+    url(r'^edit/', views.edit, name='edit'),
+    url(r'^login/', views.login, name='login'),
+    url(r'^register/', views.register, name='register'),
+    url(r'^auth/', views.auth, name='auth'),
+    url(r'^401/', views.unauthorized, name='401'),
     url(r'^', include('sign.urls', namespace='sign')),
 
     #define quiz REST API
