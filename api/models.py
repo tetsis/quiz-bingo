@@ -15,7 +15,7 @@ class quiz(models.Model):
     quiz_number = models.PositiveIntegerField(default=0)
     question = models.TextField()
     answer = models.TextField()
-    genre = models.CharField(max_length=128)
+    genre = models.CharField(max_length=128, blank=True, default="")
     solved = models.BooleanField(default=False)
 
     def __str__(self):

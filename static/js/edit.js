@@ -6,6 +6,7 @@ let genreTemplate = ['pink', 'indigo', 'dark-green', 'amber', 'cyan', 'light-gre
 let usedGenreList = new Array();
 let editFlag = false;
 let editQuizNumber = 0;
+let addOrUpdateFlag = false;
 
 window.addEventListener('load',
     function (event) {
@@ -15,8 +16,9 @@ window.addEventListener('load',
         document.getElementById('btnImport').addEventListener('click', clickStart, false);
         document.getElementById('inputCSV').addEventListener('change', changeInputCSV, false);
         document.getElementById('btnDecide').addEventListener('click', clickDecide, false);
-        document.getElementById('btnAddTop').addEventListener('click', clickAdd, false);
-        document.getElementById('btnAddOrUpdate').addEventListener('click', clickAddOrUpdate, false);
+        document.getElementById('btnAddTop').addEventListener('click', clickAddTop, false);
+        document.getElementById('btnAdd').addEventListener('click', clickAdd, false);
+        document.getElementById('btnUpdate').addEventListener('click', clickUpdate, false);
         document.getElementById('btnDelete').addEventListener('click', clickDelete, false);
         document.getElementById('mdlSlctQuizNumber').addEventListener('change', checkAddOrUpdate, false);
         document.getElementById('mdlIptQuestion').addEventListener('change', checkAddOrUpdate, false);
@@ -35,7 +37,8 @@ function init() {
         usedGenreList = Array();
 
         let hostname = window.location.hostname;
-        let url = 'http://' + hostname + ':8000/api/quizzes/?format=json&user=' + userId;
+        let port = window.location.port;
+        let url = 'http://' + hostname + ':' + port + '/api/quizzes/?format=json&user=' + userId;
         let xhr = XMLHttpRequestCreate();
         xhr.open("GET" , url);
         xhr.responseType = "json";
@@ -150,8 +153,8 @@ function XMLHttpRequestCreate(){
     return null;
 }
 
-function clickAdd() {
-    console.log('clickAdd');
+function clickAddTop() {
+    console.log('clickAddTop');
     let select = document.getElementById('mdlSlctQuizNumber');
     select.textContent = null;
     let maxNumber = document.getElementById('quizzes').childElementCount;
@@ -163,11 +166,13 @@ function clickAdd() {
         }
         select.appendChild(option);
     }
+    addOrUpdateFlag = true;
     document.getElementById('mdlIptQuestion').value = '';
     document.getElementById('mdlIptAnswer').value = '';
     document.getElementById('mdlIptGenre').value = '';
-    document.getElementById('btnAddOrUpdate').innerHTML = 'add';
-    document.getElementById('btnAddOrUpdate').disabled = true;
+    document.getElementById('btnUpdate').style.display = 'inline';
+    document.getElementById('btnAdd').disabled = true;
+    document.getElementById('btnUpdate').style.display = 'none';
     document.getElementById('btnDelete').style.display = 'none';
 }
 
@@ -196,9 +201,11 @@ function clickEdit(obj) {
     document.getElementById('mdlIptGenre').value = genre;
     editFlag = true;
     editQuizNumber = quizNumber;
+    addOrUpdateFlag = false;
 
-    document.getElementById('btnAddOrUpdate').innerHTML = 'update';
-    document.getElementById('btnAddOrUpdate').disabled = true;
+    document.getElementById('btnAdd').style.display = 'none';
+    document.getElementById('btnUpdate').style.display = 'inline';
+    document.getElementById('btnUpdate').disabled = true;
     document.getElementById('btnDelete').style.display = 'inline';
     $('#modal').modal('show');
 }
@@ -206,16 +213,77 @@ function clickEdit(obj) {
 function checkAddOrUpdate() {
     let question = document.getElementById('mdlIptQuestion').value;
     let answer = document.getElementById('mdlIptAnswer').value;
+    let flag = false;
     if ((question != "") && (answer != "")) {
-        document.getElementById('btnAddOrUpdate').disabled = false;
+        flag = false;
     }
     else {
-        document.getElementById('btnAddOrUpdate').disabled = true;
+        flag = true;
+    }
+
+    if (addOrUpdateFlag === true) {
+        document.getElementById('btnAdd').disabled = flag;
+    }
+    else {
+        document.getElementById('btnUpdate').disabled = flag;
     }
 }
 
-function clickAddOrUpdate() {
-    console.log('clickAddOrUpdate');
+function clickAdd() {
+    console.log('clickAdd');
+    let userId = document.getElementById('hdnUserId').value;
+    let mdlSlctQuizNumber = document.getElementById('mdlSlctQuizNumber').value;
+    let mdlIptQuestion = document.getElementById('mdlIptQuestion').value;
+    let mdlIptAnswer = document.getElementById('mdlIptAnswer').value;
+    let mdlIptGenre = document.getElementById('mdlIptGenre').value;
+    let tbody = document.getElementById('quizzes');
+
+    let tr = tbody.childNodes[mdlSlctQuizNumber - 1];
+    let newTr = createQuizRow(userId, mdlSlctQuizNumber, mdlIptQuestion, mdlIptAnswer, mdlIptGenre);
+
+    tbody.insertBefore(newTr, tr);
+
+    updateQuizNumber();
+
+    //POST to server
+        let hostname = window.location.hostname;
+        let port = window.location.port;
+        let url = 'http://' + hostname + ':' + port + '/api/quizzes/';
+        let data = {
+            user: userId,
+            quiz_number: mdlSlctQuizNumber,
+            question: mdlIptQuestion,
+            answer: mdlIptAnswer,
+            genre: mdlIptGenre,
+            solved: false
+        };
+        data = JSON.stringify(data);
+        console.log(data);
+        let xhr = XMLHttpRequestCreate();
+        xhr.open("POST" , url);
+        xhr.setRequestHeader("Content-Type" , "application/json");
+        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+        xhr.onreadystatechange = function(event) {
+            if (xhr.readyState == 4) {
+                console.log(xhr.status);
+                if (xhr.status == 200 || xhr.status == 201) {
+                    console.log("success");
+                    //console.log(xhr.responseText);
+                }
+                else {
+                    console.log("Error");
+                    //console.log(xhr.responseText);
+                }
+            }
+        }
+        xhr.send(data);
+
+
+    $('#modal').modal('hide');
+}
+
+function clickUpdate() {
+    console.log('clickUpdate');
     let mdlSlctQuizNumber = document.getElementById('mdlSlctQuizNumber').value;
     let mdlIptQuestion = document.getElementById('mdlIptQuestion').value;
     let mdlIptAnswer = document.getElementById('mdlIptAnswer').value;
@@ -326,5 +394,30 @@ function getCSV(data) {
             result.push(cells);
         }
     }
+    return result;
+}
+
+function getCookie( name )
+{
+    var result = null;
+
+    var cookieName = name + '=';
+    var allcookies = document.cookie;
+
+    var position = allcookies.indexOf( cookieName );
+    if( position != -1 )
+    {
+        var startIndex = position + cookieName.length;
+
+        var endIndex = allcookies.indexOf( ';', startIndex );
+        if( endIndex == -1 )
+        {
+            endIndex = allcookies.length;
+        }
+
+        result = decodeURIComponent(
+                allcookies.substring( startIndex, endIndex ) );
+    }
+
     return result;
 }
