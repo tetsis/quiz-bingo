@@ -16,6 +16,9 @@ def make(request):
 def login(request):
     return render(request, 'login.html')
 
+def register(request):
+    return render(request, 'register.html')
+
 def auth(request):
     bingo_name = request.POST['bingo_name']
     password = request.POST['password']
