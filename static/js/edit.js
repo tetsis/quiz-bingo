@@ -21,8 +21,6 @@ window.addEventListener('load',
         document.getElementById('mdlSlctQuizNumber').addEventListener('change', checkAddOrUpdate, false);
         document.getElementById('mdlIptQuestion').addEventListener('change', checkAddOrUpdate, false);
         document.getElementById('mdlIptAnswer').addEventListener('change', checkAddOrUpdate, false);
-        document.getElementById('txtName').addEventListener('change', checkDecide, false);
-        document.getElementById('txtPassword').addEventListener('change', checkDecide, false);
     }
 , false);
 
@@ -30,10 +28,42 @@ function init() {
         document.getElementById('import').style.display = 'block';
         document.getElementById('confirm').style.display = 'block';
         document.getElementById('quizzes').textContent = null;
+        let userId = document.getElementById('hdnUserId').value;
         flag = Array();
         questionAndAnswerAndGenre = Array();
         quizCounter = 0;
         usedGenreList = Array();
+
+        let hostname = window.location.hostname;
+        let url = 'http://' + hostname + ':8000/api/quizzes/?format=json&user=' + userId;
+        let xhr = XMLHttpRequestCreate();
+        xhr.open("GET" , url);
+        xhr.responseType = "json";
+        xhr.onreadystatechange = function(event) {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    console.log("success");
+                    questionAndAnswerAndGenre = xhr.response;
+                    //console.log(xhr.response);
+                    //console.log(questionAndAnswerAndGenre);
+                    maxNumber = questionAndAnswerAndGenre.length;
+
+                    let quizzes = document.getElementById('quizzes');
+                    for (let i = 0; i < maxNumber; i++) {
+                        if (questionAndAnswerAndGenre[i].quiz_number == i + 1) {
+                            let tr = createQuizRow(questionAndAnswerAndGenre[i].id, questionAndAnswerAndGenre[i].quiz_number, questionAndAnswerAndGenre[i].question, questionAndAnswerAndGenre[i].answer, questionAndAnswerAndGenre[i].genre);
+                            quizzes.appendChild(tr);
+                        }
+        }
+                    //json = JSON.stringify(xhr.response);
+                    //console.log(json);
+                }
+                else {
+                    console.log("Error");
+                }
+            }
+        }
+        xhr.send();
 }
 
 function clickStart() {
@@ -69,8 +99,9 @@ function changeInputCSV(event) {
     render.readAsText(file, "Shift_JIS");
 }
 
-function createQuizRow(quizNumber, question, answer, genre) {
+function createQuizRow(id, quizNumber, question, answer, genre) {
     let tr = document.createElement('tr');
+    let hdnId = document.createElement('input');
     let thQuizNumber = document.createElement('th');
     let tdQuestion = document.createElement('td');
     let tdAnswer = document.createElement('td');
@@ -78,6 +109,8 @@ function createQuizRow(quizNumber, question, answer, genre) {
     let edit = document.createElement('td');
     let button = document.createElement('button');
 
+    hdnId.type = 'hidden';
+    hdnId.value = id;
     thQuizNumber.scope = 'row';
     thQuizNumber.innerHTML = quizNumber;
     tdQuestion.innerHTML = question;
@@ -90,6 +123,7 @@ function createQuizRow(quizNumber, question, answer, genre) {
     button.addEventListener('click', function(){clickEdit(this)}, false);
     edit.appendChild(button);
 
+    tr.appendChild(hdnId);
     tr.appendChild(thQuizNumber);
     tr.appendChild(tdQuestion);
     tr.appendChild(tdAnswer);
@@ -140,10 +174,11 @@ function clickAdd() {
 function clickEdit(obj) {
     console.log('clickEdit: obj = ' + obj);
     let tr = obj.parentNode.parentNode;
-    let quizNumber = tr.childNodes[0].innerHTML;
-    let question = tr.childNodes[1].innerHTML;
-    let answer = tr.childNodes[2].innerHTML;
-    let genre = tr.childNodes[3].innerHTML;
+    let id = tr.childNodes[0].value;
+    let quizNumber = tr.childNodes[1].innerHTML;
+    let question = tr.childNodes[2].innerHTML;
+    let answer = tr.childNodes[3].innerHTML;
+    let genre = tr.childNodes[4].innerHTML;
     let select = document.getElementById('mdlSlctQuizNumber');
     let maxNumber = document.getElementById('quizzes').childElementCount;
     select.textContent = null;
@@ -179,17 +214,6 @@ function checkAddOrUpdate() {
     }
 }
 
-function checkDecide() {
-    let name = document.getElementById('txtName').value;
-    let password = document.getElementById('txtPassword').value;
-    if ((name != "") && (password != "")) {
-        document.getElementById('btnDecide').disabled = false;
-    }
-    else {
-        document.getElementById('btnDecide').disabled = true;
-    }
-}
-
 function clickAddOrUpdate() {
     console.log('clickAddOrUpdate');
     let mdlSlctQuizNumber = document.getElementById('mdlSlctQuizNumber').value;
@@ -218,7 +242,7 @@ function updateQuizNumber() {
     console.log('updateQuizNumber');
     let maxNumber = document.getElementById('quizzes').childElementCount;
     for (let i = 0; i < maxNumber; i++) {
-        let thQuizNumber = document.getElementById('quizzes').childNodes[i].childNodes[0];
+        let thQuizNumber = document.getElementById('quizzes').childNodes[i].childNodes[1];
         thQuizNumber.innerHTML = i + 1;
     }
 }
@@ -240,11 +264,12 @@ function clickDecide() {
     questionAndAnswerAndGenre = Array();
     for (let i = 0; i < maxNumber; i++) {
         let tr = tbody.childNodes[i];
-        let quizNumber = tr.childNodes[0].innerHTML;
+        let id = tr.childNodes[0].value;
+        let quizNumber = tr.childNodes[1].innerHTML;
         quizNumber = parseInt(quizNumber, 10);
-        let question = tr.childNodes[1].innerHTML;
-        let answer = tr.childNodes[2].innerHTML;
-        let genre = tr.childNodes[3].innerHTML;
+        let question = tr.childNodes[2].innerHTML;
+        let answer = tr.childNodes[3].innerHTML;
+        let genre = tr.childNodes[4].innerHTML;
         let quiz = Array(quizNumber, question, answer, genre);
         questionAndAnswerAndGenre.push(quiz);
     }
