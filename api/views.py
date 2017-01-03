@@ -1,15 +1,15 @@
 from django.shortcuts import render
 from rest_framework import viewsets
 from .models import quiz
-from .models import bingo
+#from .models import bingo
 from .serializer import quizSerializer
-from .serializer import bingoSerializer
+#from .serializer import bingoSerializer
 
 # Create your views here.
 class quizViewSet(viewsets.ModelViewSet):
     queryset = quiz.objects.all()
     serializer_class = quizSerializer
 
-class bingoViewSet(viewsets.ModelViewSet):
-    queryset = bingo.objects.all()
-    serializer_class = bingoSerializer
+#class bingoViewSet(viewsets.ModelViewSet):
+#    queryset = bingo.objects.all()
+#    serializer_class = bingoSerializer

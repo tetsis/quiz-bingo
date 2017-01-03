@@ -23,7 +23,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.index, name='index'),
     url(r'quick/', views.quick, name='quick'),
-    url(r'make/', views.make, name='make'),
+    url(r'edit/', views.edit, name='edit'),
     url(r'login/', views.login, name='login'),
     url(r'register/', views.register, name='register'),
     url(r'auth/', views.auth, name='auth'),

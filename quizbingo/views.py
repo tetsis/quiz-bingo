@@ -10,8 +10,8 @@ def index(request):
 def quick(request):
     return render(request, 'quick.html')
 
-def make(request):
-    return render(request, 'make.html')
+def edit(request):
+    return render(request, 'edit.html')
 
 def login(request):
     return render(request, 'login.html')
