@@ -9,6 +9,7 @@ from .serializer import quizSerializer
 class quizViewSet(viewsets.ModelViewSet):
     queryset = quiz.objects.all()
     serializer_class = quizSerializer
+    filter_fields = ('user',)
 
 #class bingoViewSet(viewsets.ModelViewSet):
 #    queryset = bingo.objects.all()

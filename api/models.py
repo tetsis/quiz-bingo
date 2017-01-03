@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 
 class quiz(models.Model):
     user = models.ForeignKey(User)
-    quiz_number = models.PositiveIntegerField(unique=True, default=0)
+    quiz_number = models.PositiveIntegerField(default=0)
     question = models.TextField()
     answer = models.TextField()
     genre = models.CharField(max_length=128)

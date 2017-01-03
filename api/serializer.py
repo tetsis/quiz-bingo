@@ -5,7 +5,7 @@ from .models import quiz
 class quizSerializer(serializers.ModelSerializer):
     class Meta:
         model = quiz
-        fields = ('quiz_number', 'question', 'answer', 'genre', 'solved')
+        fields = ('user', 'quiz_number', 'question', 'answer', 'genre', 'solved')
 
 #class bingoSerializer(serializers.ModelSerializer):
 #    class Meta:
