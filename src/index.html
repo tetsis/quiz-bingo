@@ -15,16 +15,37 @@
         <h1 id="title">QUIZ BINGO</h1>
     </div>
 
-    <div>
-        <button type="button" id="btnQuick" class="btn btn-raised btn-default" onclick="location.href='quick.html'">quick start</button>
+    <div id="start">
+        <input type="file" id="inputCSV" accept=".csv"/>
+        <button type="button" id="btnLoadOfQuickStart" class="btn btn-raised btn-default">load quiz file</button>
     </div>
 
-    <div>
-        <button type="button" id="btnMake" class="btn btn-raised btn-default" onclick="location.href='make.html'">make your quiz bingo</button>
+    <div id="running">
+        <table align="center">
+            <tr>
+                <td>
+                    <table id="buttons">
+                    </table>
+                </td>
+                <td>
+                    <div id="genres">
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <div id="quizzes">
+        </div>
+
+        <div id="menu">
+            <button type="button" id="btnQuit" class="btn btn-raised btn-default">QUIT</button>
+        </div>
+
     </div>
 
     <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/mdb.min.js"></script>
+    <script type="text/javascript" src="js/quick.js"></script>
 </body>
 </html>
