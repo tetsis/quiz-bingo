@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewpoint" content="width=device-width, initial-scale=2.0, minimum-scale=2.0">
+    <title>QUIZ BINGO</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/mdb.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">-->
+</head>
+<body>
+
+    <div id="top">
+        <h1 id="title">QUIZ BINGO</h1>
+    </div>
+
+    <div id="start">
+        <input type="file" id="inputCSV" accept=".csv"/>
+        <button type="button" id="btnLoadOfQuickStart" class="btn btn-raised btn-default">load quiz file</button>
+    </div>
+
+    <div id="running">
+        <table align="center">
+            <tr>
+                <td>
+                    <table id="buttons">
+                    </table>
+                </td>
+                <td>
+                    <div id="genres">
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <div id="quizzes">
+        </div>
+
+        <div id="menu">
+            <button type="button" id="btnQuit" class="btn btn-raised btn-default">QUIT</button>
+        </div>
+
+    </div>
+
+    <script type="text/javascript" src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
