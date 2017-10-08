@@ -10,11 +10,13 @@
 ```
 
 ### Django
+
 ```
 # pip3.6 install django
 ```
 
 ### Apache
+
 ```
 # useradd www-data -g apache
 # chmod 770 /home/www-data/
@@ -52,8 +54,13 @@ Alias /static/ /var/www/static/
 ```
 
 ## Easy Run
+
 ```
 $ python3.6 manage.py runserver 0:8000
 ```
 
+## CSV format
 
+```
+[Quiz], [Answer], [Genre]
+```
