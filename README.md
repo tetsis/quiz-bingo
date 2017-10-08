@@ -62,11 +62,13 @@ Alias /static/ /var/www/static/
 ## Easy Run
 
 ```
+$ cd /home/www-data/quiz-bingo
 $ python3.6 manage.py runserver 0:8000
 ```
 
 ## CSV format
 
 ```
-[Quiz], [Answer], [Genre]
+[Quiz1], [Answer1], [Genre1]
+[Quiz2], [Answer2], [Genre2]
 ```
