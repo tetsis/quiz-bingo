@@ -2,6 +2,22 @@
 
 ## Install
 
+### SELinux
+
+```
+# vim /etc/selinux/config
+
+SELINUX=disabled
+
+# reboot
+```
+
+### Vim
+
+```
+# yum -y install vim
+```
+
 ### Git
 
 ```
@@ -34,7 +50,7 @@
 
 # su - www-data
 $ git clone https://github.com/tetsis/quiz-bingo.git
-$ cd quiz-bingo/quizbingo
+$ cd quiz-bingo
 $ python3.6 manage.py collectstatic
 $ python3.6 manage.py migrate
 $ exit
