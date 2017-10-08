@@ -2,6 +2,12 @@
 
 ## Install
 
+### Git
+
+```
+# yum -y install git
+```
+
 ### Python3
 
 ```
@@ -18,6 +24,7 @@
 ### Apache
 
 ```
+# yum -y install httpd
 # useradd www-data -g apache
 # chmod 770 /home/www-data/
 
@@ -27,12 +34,11 @@
 
 # su - www-data
 $ git clone https://github.com/tetsis/quiz-bingo.git
-$ cd quiz-bingo
+$ cd quiz-bingo/quizbingo
 $ python3.6 manage.py collectstatic
 $ python3.6 manage.py migrate
 $ exit
 
-# yum -y install httpd
 # vim /etc/httpd/conf/httpd.conf
 
 WSGIScriptAlias / /home/www-data/quiz-bingo/quizbingo/wsgi.py
