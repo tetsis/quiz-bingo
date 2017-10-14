@@ -56,6 +56,18 @@ body {
     border-radius: 0px;
 }
 
+.btn_answer_select {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 30px;
+    display: block;
+}
+
+.btn_answer_select.selected{
+    border: solid 2px #4285F4;
+}
+
 .btn_answer {
     font-size: 30px;
     padding: 10px 30px;

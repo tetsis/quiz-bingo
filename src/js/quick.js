@@ -1,5 +1,6 @@
 let maxNumber = 0;
 let flag = Array();
+let answerSelection = Array();
 let quizAndAnswer = Array();
 let quizAndAnswerAndGenre = Array();
 let quizCounter = 0;
@@ -73,6 +74,10 @@ function generateQuizzes() {
         let header = document.createElement('h2');
         let closeButton = document.createElement('button');
         let quizBody = document.createElement('div');
+        let answerSelects = [];
+        for(let j = 1; j <= 4; j++){
+          answerSelects.push(document.createElement('button'));
+        }
         let answerButton = document.createElement('button');
         let collapse = document.createElement('div');
         let answerBody = document.createElement('div');
@@ -95,6 +100,16 @@ function generateQuizzes() {
         quizBody.className = 'well sentence';
         quizBody.innerHTML = quizAndAnswerAndGenre[i - 1][0];
         modalBody.appendChild(quizBody);
+
+        for(let j = 1; j <= 4; j++){
+          let answerSelect = answerSelects[j-1];
+          answerSelect.type = 'button';
+          answerSelect.id = 'answerButton' + i + '-' + j;
+          answerSelect.className = 'btn btn-raised btn-outline-default waves-effect btn_answer_select';
+          answerSelect.innerHTML = j + ' : ANSWER';
+          answerSelect.addEventListener('click', function(){selectAnswer(i, j)}, false);
+          modalBody.appendChild(answerSelect);
+        }
 
         answerButton.type = 'button';
         answerButton.id = 'answerButton' + i;
@@ -206,6 +221,23 @@ function clickButton(number) {
         $('#collapse' + number).collapse('hide');
         $('#quiz' + number).modal('show');
     }
+}
+
+function selectAnswer(quizNumber, selectionNumber){
+    for (let j = 1; j <= 4; j++) {
+      let answerSelect = document.getElementById('answerButton' + quizNumber + '-' + j);
+      if (j == selectionNumber) {
+        answerSelect.classList.add('selected');
+        answerSelect.classList.add('btn-primary');
+        answerSelect.classList.remove('btn-outline-default');
+      } else {
+        answerSelect.classList.add('btn-outline-default');
+        answerSelect.classList.remove('selected');
+        answerSelect.classList.remove('btn-primary');
+        
+      }
+    }
+    answerSelection[quizNumber-1] = selectionNumber;
 }
 
 function clickAnswer(number) {
