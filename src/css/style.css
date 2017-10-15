@@ -56,7 +56,7 @@ body {
     border-radius: 0px;
 }
 
-.btn_answer_select {
+.btn_answer_choice {
     width: 80%;
     margin-left: auto;
     margin-right: auto;
@@ -64,7 +64,7 @@ body {
     display: block;
 }
 
-.btn_answer_select.selected{
+.btn_answer_choice.chosen{
     border: solid 2px #4285F4;
 }
 

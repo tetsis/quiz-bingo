@@ -1,16 +1,16 @@
 let maxNumber = 0;
 let flag = Array();
-let answerSelection = Array();
+let answerChosen = Array();
 let quizAndAnswer = Array();
 let quizAndAnswerAndGenre = Array();
 let quizCounter = 0;
 let genreTemplate = ['pink', 'indigo', 'dark-green', 'amber', 'cyan', 'light-green', 'yellow', 'purple', 'deep-orange', 'brown', 'blue-grey'];
 let usedGenreList = new Array();
-const QUIZ_ROWNUM = 1;
-const SELECTION_ROWSTART = 2;
-const SELECTION_ROWEND = 5;
-const ANSWER_ROWNUM = 6;
-const GENRE_ROWNUM = 7;
+const QUIZ_ROW_NUM = 1;
+const CHOICES_ROW_START = 2;
+const CHOICES_ROW_END = 5;
+const ANSWER_ROW_NUM = 6;
+const GENRE_ROW_NUM = 7;
 
 window.addEventListener('load',
     function (event) {
@@ -46,10 +46,10 @@ function generateButtons() {
             button.type = 'button';
             button.id = 'button' + number;
             button.className = 'btn btn-raised waves-effect btn_quiz btn_quiz_before_answer';
-            if (quizAndAnswerAndGenre[number - 1].length >= GENRE_ROWNUM - 1) {
-                if (quizAndAnswerAndGenre[number - 1][GENRE_ROWNUM - 1].match(/\S/g) !== null) {
+            if (quizAndAnswerAndGenre[number - 1].length >= GENRE_ROW_NUM - 1) {
+                if (quizAndAnswerAndGenre[number - 1][GENRE_ROW_NUM - 1].match(/\S/g) !== null) {
                     for (let k = 0; k < usedGenreList.length; k++) {
-                        if (quizAndAnswerAndGenre[number - 1][GENRE_ROWNUM - 1] == usedGenreList[k]) {
+                        if (quizAndAnswerAndGenre[number - 1][GENRE_ROW_NUM - 1] == usedGenreList[k]) {
                             button.className += ' btn-' + genreTemplate[k];
                         }
                     }
@@ -79,9 +79,9 @@ function generateQuizzes() {
         let header = document.createElement('h2');
         let closeButton = document.createElement('button');
         let quizBody = document.createElement('div');
-        let answerSelects = [];
-        for(let j = 1; j <= SELECTION_ROWEND - SELECTION_ROWSTART + 1; j++){
-          answerSelects.push(document.createElement('button'));
+        let answerChoiceButtons = [];
+        for(let j = 1; j <= CHOICES_ROW_END - CHOICES_ROW_START + 1; j++){
+          answerChoiceButtons.push(document.createElement('button'));
         }
         let answerButton = document.createElement('button');
         let collapse = document.createElement('div');
@@ -103,17 +103,17 @@ function generateQuizzes() {
 
         quizBody.id = 'quizBody' + i;
         quizBody.className = 'well sentence';
-        quizBody.innerHTML = quizAndAnswerAndGenre[i - 1][QUIZ_ROWNUM - 1] + '<br>' + 'Answer is ' + quizAndAnswerAndGenre[i - 1][ANSWER_ROWNUM - 1];
+        quizBody.innerHTML = quizAndAnswerAndGenre[i - 1][QUIZ_ROW_NUM - 1] + '<br>' + 'Answer is ' + quizAndAnswerAndGenre[i - 1][ANSWER_ROW_NUM - 1];
         modalBody.appendChild(quizBody);
 
-        for(let j = 1; j <= SELECTION_ROWEND - SELECTION_ROWSTART + 1; j++){
-          let answerSelect = answerSelects[j - 1];
-          answerSelect.type = 'button';
-          answerSelect.id = 'answerButton' + i + '-' + j;
-          answerSelect.className = 'btn btn-raised btn-outline-default waves-effect btn_answer_select';
-          answerSelect.innerHTML = j + ' : ' + quizAndAnswerAndGenre[i - 1][j - 1 + SELECTION_ROWSTART - 1];
-          answerSelect.addEventListener('click', function(){selectAnswer(i, j)}, false);
-          modalBody.appendChild(answerSelect);
+        for(let j = 1; j <= CHOICES_ROW_END - CHOICES_ROW_START + 1; j++){
+          let answerChoiceButton = answerChoiceButtons[j - 1];
+          answerChoiceButton.type = 'button';
+          answerChoiceButton.id = 'answerButton' + i + '-' + j;
+          answerChoiceButton.className = 'btn btn-raised btn-outline-default waves-effect btn_answer_choice';
+          answerChoiceButton.innerHTML = j + ' : ' + quizAndAnswerAndGenre[i - 1][j - 1 + CHOICES_ROW_START - 1];
+          answerChoiceButton.addEventListener('click', function(){chooseAnswer(i, j)}, false);
+          modalBody.appendChild(answerChoiceButton);
         }
 
         answerButton.type = 'button';
@@ -127,7 +127,7 @@ function generateQuizzes() {
         collapse.className = 'collapse';
         answerBody.id = 'answerBody' + i;
         answerBody.className = 'well sentence';
-        answerBody.innerHTML = 'Answer is ' + quizAndAnswerAndGenre[i - 1][ANSWER_ROWNUM - 1];
+        answerBody.innerHTML = 'Answer is ' + quizAndAnswerAndGenre[i - 1][ANSWER_ROW_NUM - 1];
         collapse.appendChild(answerBody);
         modalBody.appendChild(collapse);
         modalContent.appendChild(modalBody);
@@ -229,22 +229,22 @@ function clickButton(number) {
 }
 
 // 選択した選択肢のボタン表示を変更する
-// selectionNumberに範囲外の数字をを入れるとリセットされる
-function selectAnswer(quizNumber, selectionNumber){
-    for (let j = 1; j <= SELECTION_ROWEND - SELECTION_ROWSTART + 1; j++) {
-      let answerSelect = document.getElementById('answerButton' + quizNumber + '-' + j);
-      if (j == selectionNumber) {
-        answerSelect.classList.add('selected');
-        answerSelect.classList.add('btn-primary');
-        answerSelect.classList.remove('btn-outline-default');
+// chosenNumberに範囲外の数字をを入れるとリセットされる
+function chooseAnswer(quizNumber, chosenNumber){
+    for (let j = 1; j <= CHOICES_ROW_END - CHOICES_ROW_START + 1; j++) {
+      let answerChoiceButton = document.getElementById('answerButton' + quizNumber + '-' + j);
+      if (j == chosenNumber) {
+        answerChoiceButton.classList.add('chosen');
+        answerChoiceButton.classList.add('btn-primary');
+        answerChoiceButton.classList.remove('btn-outline-default');
       } else {
-        answerSelect.classList.add('btn-outline-default');
-        answerSelect.classList.remove('selected');
-        answerSelect.classList.remove('btn-primary');
+        answerChoiceButton.classList.add('btn-outline-default');
+        answerChoiceButton.classList.remove('chosen');
+        answerChoiceButton.classList.remove('btn-primary');
         
       }
     }
-    answerSelection[quizNumber] = selectionNumber;
+    answerChosen[quizNumber] = chosenNumber;
 }
 
 function clickAnswer(number) {
@@ -254,22 +254,22 @@ function clickAnswer(number) {
     let modalFooter = document.getElementById('modalFooter' + number);
     // ボタンの無効化
     answerButton.disabled = true;
-    for (let j = 1; j <= SELECTION_ROWEND - SELECTION_ROWSTART + 1; j++) {
-      if (j !== answerSelection[number]) {
-        let answerSelect = document.getElementById('answerButton' + number + '-' + j);
-        answerSelect.disabled = true;
+    for (let j = 1; j <= CHOICES_ROW_END - CHOICES_ROW_START + 1; j++) {
+      if (j !== answerChosen[number]) {
+        let answerChoiceButton = document.getElementById('answerButton' + number + '-' + j);
+        answerChoiceButton.disabled = true;
       }
     }
     // 正解・不正解の時の処理
     // ボタンの変更＆結果の格納
-    if (answerSelection[number] == Number(quizAndAnswerAndGenre[number - 1][ANSWER_ROWNUM - 1])) {
+    if (answerChosen[number] == Number(quizAndAnswerAndGenre[number - 1][ANSWER_ROW_NUM - 1])) {
       let button = document.getElementById('button' + number);
       button.className = 'btn btn-raised btn-outline-default waves-effect btn_quiz btn_quiz_after_answer';
       answerBody.innerHTML = '正解！';
       flag[number] = true;
     } else {
       answerBody.innerHTML = '不正解！';
-      answerSelection[number] = '';
+      answerChosen[number] = '';
     }
     // 結果の表示
     $('#collapse' + number).collapse('show');
@@ -283,10 +283,10 @@ function clickOk(number) {
     if (!flag[number]) {
       let answerButton = document.getElementById('answerButton' + number);
       answerButton.disabled = false;
-      selectAnswer(number, 0);
-      for (let j = 1; j <= SELECTION_ROWEND - SELECTION_ROWSTART + 1; j++) {
-        let answerSelect = document.getElementById('answerButton' + number + '-' + j);
-        answerSelect.disabled = false;
+      chooseAnswer(number, 0);
+      for (let j = 1; j <= CHOICES_ROW_END - CHOICES_ROW_START + 1; j++) {
+        let answerChoiceButton = document.getElementById('answerButton' + number + '-' + j);
+        answerChoiceButton.disabled = false;
       }
     }
 }
@@ -298,19 +298,19 @@ function getCSV(data) {
     lines = data.split('\n');
     for (let i = 0; i < lines.length; i++) {
         let cells = lines[i].split(",");
-        if(cells.length >= ANSWER_ROWNUM) {
-            if (cells.length >= GENRE_ROWNUM) {
-                if (cells[GENRE_ROWNUM - 1].match(/\S/g) !== null) {
+        if(cells.length >= ANSWER_ROW_NUM) {
+            if (cells.length >= GENRE_ROW_NUM) {
+                if (cells[GENRE_ROW_NUM - 1].match(/\S/g) !== null) {
                     if (usedGenreList.length == 0) {
-                        usedGenreList.push(cells[GENRE_ROWNUM - 1]);
+                        usedGenreList.push(cells[GENRE_ROW_NUM - 1]);
                     }
                     else {
                         for (let j = 0; j < usedGenreList.length; j++) {
-                            if (cells[GENRE_ROWNUM - 1] == usedGenreList[j]) {
+                            if (cells[GENRE_ROW_NUM - 1] == usedGenreList[j]) {
                                 break;
                             }
                             else if (j == usedGenreList.length - 1) {
-                                usedGenreList.push(cells[GENRE_ROWNUM - 1]);
+                                usedGenreList.push(cells[GENRE_ROW_NUM - 1]);
                             }
                         }
                     }
