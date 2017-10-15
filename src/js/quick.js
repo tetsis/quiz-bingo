@@ -6,6 +6,11 @@ let quizAndAnswerAndGenre = Array();
 let quizCounter = 0;
 let genreTemplate = ['pink', 'indigo', 'dark-green', 'amber', 'cyan', 'light-green', 'yellow', 'purple', 'deep-orange', 'brown', 'blue-grey'];
 let usedGenreList = new Array();
+const QUIZ_ROWNUM = 1;
+const SELECTION_ROWSTART = 2;
+const SELECTION_ROWEND = 5;
+const ANSWER_ROWNUM = 6;
+const GENRE_ROWNUM = 7;
 
 window.addEventListener('load',
     function (event) {
@@ -41,10 +46,10 @@ function generateButtons() {
             button.type = 'button';
             button.id = 'button' + number;
             button.className = 'btn btn-raised waves-effect btn_quiz btn_quiz_before_answer';
-            if (quizAndAnswerAndGenre[number - 1].length >= 2) {
-                if (quizAndAnswerAndGenre[number - 1][2].match(/\S/g) !== null) {
+            if (quizAndAnswerAndGenre[number - 1].length >= GENRE_ROWNUM - 1) {
+                if (quizAndAnswerAndGenre[number - 1][GENRE_ROWNUM - 1].match(/\S/g) !== null) {
                     for (let k = 0; k < usedGenreList.length; k++) {
-                        if (quizAndAnswerAndGenre[number - 1][2] == usedGenreList[k]) {
+                        if (quizAndAnswerAndGenre[number - 1][GENRE_ROWNUM - 1] == usedGenreList[k]) {
                             button.className += ' btn-' + genreTemplate[k];
                         }
                     }
@@ -75,7 +80,7 @@ function generateQuizzes() {
         let closeButton = document.createElement('button');
         let quizBody = document.createElement('div');
         let answerSelects = [];
-        for(let j = 1; j <= 4; j++){
+        for(let j = 1; j <= SELECTION_ROWEND - SELECTION_ROWSTART + 1; j++){
           answerSelects.push(document.createElement('button'));
         }
         let answerButton = document.createElement('button');
@@ -98,15 +103,15 @@ function generateQuizzes() {
 
         quizBody.id = 'quizBody' + i;
         quizBody.className = 'well sentence';
-        quizBody.innerHTML = quizAndAnswerAndGenre[i - 1][0];
+        quizBody.innerHTML = quizAndAnswerAndGenre[i - 1][QUIZ_ROWNUM - 1] + '<br>' + 'Answer is ' + quizAndAnswerAndGenre[i - 1][ANSWER_ROWNUM - 1];
         modalBody.appendChild(quizBody);
 
-        for(let j = 1; j <= 4; j++){
-          let answerSelect = answerSelects[j-1];
+        for(let j = 1; j <= SELECTION_ROWEND - SELECTION_ROWSTART + 1; j++){
+          let answerSelect = answerSelects[j - 1];
           answerSelect.type = 'button';
           answerSelect.id = 'answerButton' + i + '-' + j;
           answerSelect.className = 'btn btn-raised btn-outline-default waves-effect btn_answer_select';
-          answerSelect.innerHTML = j + ' : ANSWER';
+          answerSelect.innerHTML = j + ' : ' + quizAndAnswerAndGenre[i - 1][j - 1 + SELECTION_ROWSTART - 1];
           answerSelect.addEventListener('click', function(){selectAnswer(i, j)}, false);
           modalBody.appendChild(answerSelect);
         }
@@ -122,7 +127,7 @@ function generateQuizzes() {
         collapse.className = 'collapse';
         answerBody.id = 'answerBody' + i;
         answerBody.className = 'well sentence';
-        answerBody.innerHTML = quizAndAnswerAndGenre[i - 1][1];
+        answerBody.innerHTML = 'Answer is ' + quizAndAnswerAndGenre[i - 1][ANSWER_ROWNUM - 1];
         collapse.appendChild(answerBody);
         modalBody.appendChild(collapse);
         modalContent.appendChild(modalBody);
@@ -223,8 +228,10 @@ function clickButton(number) {
     }
 }
 
+// 選択した選択肢のボタン表示を変更する
+// selectionNumberに範囲外の数字をを入れるとリセットされる
 function selectAnswer(quizNumber, selectionNumber){
-    for (let j = 1; j <= 4; j++) {
+    for (let j = 1; j <= SELECTION_ROWEND - SELECTION_ROWSTART + 1; j++) {
       let answerSelect = document.getElementById('answerButton' + quizNumber + '-' + j);
       if (j == selectionNumber) {
         answerSelect.classList.add('selected');
@@ -237,22 +244,51 @@ function selectAnswer(quizNumber, selectionNumber){
         
       }
     }
-    answerSelection[quizNumber-1] = selectionNumber;
+    answerSelection[quizNumber] = selectionNumber;
 }
 
 function clickAnswer(number) {
     console.log('clickAnswer');
+    let answerButton = document.getElementById('answerButton' + number);
+    let answerBody = document.getElementById('answerBody' + number);
     let modalFooter = document.getElementById('modalFooter' + number);
+    // ボタンの無効化
+    answerButton.disabled = true;
+    for (let j = 1; j <= SELECTION_ROWEND - SELECTION_ROWSTART + 1; j++) {
+      if (j !== answerSelection[number]) {
+        let answerSelect = document.getElementById('answerButton' + number + '-' + j);
+        answerSelect.disabled = true;
+      }
+    }
+    // 正解・不正解の時の処理
+    // ボタンの変更＆結果の格納
+    if (answerSelection[number] == Number(quizAndAnswerAndGenre[number - 1][ANSWER_ROWNUM - 1])) {
+      let button = document.getElementById('button' + number);
+      button.className = 'btn btn-raised btn-outline-default waves-effect btn_quiz btn_quiz_after_answer';
+      answerBody.innerHTML = '正解！';
+      flag[number] = true;
+    } else {
+      answerBody.innerHTML = '不正解！';
+      answerSelection[number] = '';
+    }
+    // 結果の表示
     $('#collapse' + number).collapse('show');
     modalFooter.style.display = 'block';
-    let button = document.getElementById('button' + number);
-    button.className = 'btn btn-raised btn-outline-default waves-effect btn_quiz btn_quiz_after_answer';
-    flag[number] = true;
 }
 
 function clickOk(number) {
     console.log('clickOk');
     $('#quiz' + number).modal('hide');
+    // 不正解だった場合はボタンの無効化を解除
+    if (!flag[number]) {
+      let answerButton = document.getElementById('answerButton' + number);
+      answerButton.disabled = false;
+      selectAnswer(number, 0);
+      for (let j = 1; j <= SELECTION_ROWEND - SELECTION_ROWSTART + 1; j++) {
+        let answerSelect = document.getElementById('answerButton' + number + '-' + j);
+        answerSelect.disabled = false;
+      }
+    }
 }
 
 function getCSV(data) {
@@ -262,19 +298,19 @@ function getCSV(data) {
     lines = data.split('\n');
     for (let i = 0; i < lines.length; i++) {
         let cells = lines[i].split(",");
-        if(cells.length >= 2) {
-            if (cells.length >= 3) {
-                if (cells[2].match(/\S/g) !== null) {
+        if(cells.length >= ANSWER_ROWNUM) {
+            if (cells.length >= GENRE_ROWNUM) {
+                if (cells[GENRE_ROWNUM - 1].match(/\S/g) !== null) {
                     if (usedGenreList.length == 0) {
-                        usedGenreList.push(cells[2]);
+                        usedGenreList.push(cells[GENRE_ROWNUM - 1]);
                     }
                     else {
                         for (let j = 0; j < usedGenreList.length; j++) {
-                            if (cells[2] == usedGenreList[j]) {
+                            if (cells[GENRE_ROWNUM - 1] == usedGenreList[j]) {
                                 break;
                             }
                             else if (j == usedGenreList.length - 1) {
-                                usedGenreList.push(cells[2]);
+                                usedGenreList.push(cells[GENRE_ROWNUM - 1]);
                             }
                         }
                     }
