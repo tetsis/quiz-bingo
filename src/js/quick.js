@@ -146,6 +146,73 @@ function generateQuizzes() {
     }
 }
 
+function generateAnswerModal() {
+    let quizzes = document.getElementById('quizzes');
+    let answerModal = document.createElement('div');
+    let modalDialog = document.createElement('div');
+    let modalContent = document.createElement('div');
+    let modalHeader = document.createElement('div');
+    let modalBody = document.createElement('div');
+    let modalFooter = document.createElement('div');
+    let header = document.createElement('h2');
+    let closeButton = document.createElement('button');
+    let answerBody = document.createElement('div');
+    let answerImg = document.createElement('img');
+    let okButton = document.createElement('button');
+    answerModal.id = 'answerModal';
+    answerModal.className = 'modal fade';
+    answerModal.tabindex = '-1';
+    modalDialog.className = 'modal-dialog modal-lg';
+    modalContent.className = 'modal-content';
+    modalHeader.className = 'modal-header';
+    modalBody.className = 'modal-body';
+    modalFooter.id = 'modalFooterAnswer';
+    modalFooter.className = 'modal-footer';
+
+    modalHeader.appendChild(header);
+    modalContent.appendChild(modalHeader);
+
+    answerBody.id = 'answerBody';
+    answerBody.className = 'well sentence';
+    answerImg.height = '575';
+    answerBody.appendChild(answerImg);
+    modalBody.appendChild(answerBody);
+    modalContent.appendChild(modalBody);
+
+    okButton.type = 'button';
+    okButton.id = 'okButtonAnswer';
+    okButton.className = 'btn btn-outline-default waves-effect btn_result';
+    okButton.innerHTML = 'OK';
+    okButton.addEventListener('click', function(){$('#answerModal').modal('hide');
+}, false);
+    modalFooter.appendChild(okButton);
+    modalContent.appendChild(modalFooter);
+
+    modalDialog.appendChild(modalContent);
+    answerModal.appendChild(modalDialog);
+    quizzes.appendChild(answerModal);
+}
+
+function modifyAnswerModal(answer) {
+    let $modalHeaderText = $('#answerModal h2');
+    let $answerImg = $('#answerModal img');
+ 
+    var randomMin = 1 ;
+    var randomMax = 6 ;
+ 
+    var randomNum = Math.floor( Math.random() * (randomMax + 1 - randomMin) ) + randomMin ;
+ 
+    if(answer == 'correct') {
+      $modalHeaderText.html('正解！');
+    } else if (answer == 'incorrect'){
+      $modalHeaderText.html('不正解');
+    } else {
+      $modalHeaderText.html('');
+    }
+
+    $answerImg.attr('src', 'img/' + answer + '/' + randomNum + '.png')
+}
+
 function generateGenres() {
     let genres = document.getElementById('genres');
     let table = document.createElement('table');
@@ -205,6 +272,8 @@ function changeInputCSV(event) {
         generateButtons();
         //クイズ生成
         generateQuizzes();
+        //解答演出生成
+        generateAnswerModal();
         //ジャンル生成
         generateGenres();
         document.getElementById('start').style.display = 'none';
@@ -252,6 +321,8 @@ function clickAnswer(number) {
     let answerButton = document.getElementById('answerButton' + number);
     let answerBody = document.getElementById('answerBody' + number);
     let modalFooter = document.getElementById('modalFooter' + number);
+    let answer;
+    
     // ボタンの無効化
     answerButton.disabled = true;
     for (let j = 1; j <= CHOICES_ROW_END - CHOICES_ROW_START + 1; j++) {
@@ -266,14 +337,18 @@ function clickAnswer(number) {
       let button = document.getElementById('button' + number);
       button.className = 'btn btn-raised btn-outline-default waves-effect btn_quiz btn_quiz_after_answer';
       answerBody.innerHTML = '正解！';
+      answer = 'correct';
       flag[number] = true;
     } else {
       answerBody.innerHTML = '不正解！';
       answerChosen[number] = '';
+      answer = 'incorrect';
     }
     // 結果の表示
     $('#collapse' + number).collapse('show');
     modalFooter.style.display = 'block';
+    modifyAnswerModal(answer);
+    $('#answerModal').modal('show');
 }
 
 function clickOk(number) {
