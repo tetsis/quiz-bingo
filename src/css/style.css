@@ -89,3 +89,15 @@ body {
     font-size: 35px;
     margin: 0px auto;
 }
+
+#credit {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 20px;
+}
+
+#credit p {
+    text-align: left;
+    font-size: 15px;
+}
