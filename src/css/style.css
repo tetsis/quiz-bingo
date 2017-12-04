@@ -101,3 +101,8 @@ body {
     text-align: left;
     font-size: 15px;
 }
+
+#answerModal h1 {
+    font-size: 100px;
+    font-weight: bold;
+}

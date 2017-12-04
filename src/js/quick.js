@@ -154,7 +154,7 @@ function generateAnswerModal() {
     let modalHeader = document.createElement('div');
     let modalBody = document.createElement('div');
     let modalFooter = document.createElement('div');
-    let header = document.createElement('h2');
+    let header = document.createElement('h1');
     let closeButton = document.createElement('button');
     let answerBody = document.createElement('div');
     let answerImg = document.createElement('img');
@@ -174,7 +174,7 @@ function generateAnswerModal() {
 
     answerBody.id = 'answerBody';
     answerBody.className = 'well sentence';
-    answerImg.height = '575';
+    answerImg.height = '500';
     answerBody.appendChild(answerImg);
     modalBody.appendChild(answerBody);
     modalContent.appendChild(modalBody);
@@ -194,7 +194,7 @@ function generateAnswerModal() {
 }
 
 function modifyAnswerModal(answer) {
-    let $modalHeaderText = $('#answerModal h2');
+    let $modalHeaderText = $('#answerModal h1');
     let $answerImg = $('#answerModal img');
  
     var randomMin = 1 ;
@@ -205,7 +205,7 @@ function modifyAnswerModal(answer) {
     if(answer == 'correct') {
       $modalHeaderText.html('正解！');
     } else if (answer == 'incorrect'){
-      $modalHeaderText.html('不正解');
+      $modalHeaderText.html('不正解！');
     } else {
       $modalHeaderText.html('');
     }
