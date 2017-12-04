@@ -242,6 +242,16 @@ function generateGenres() {
     genres.appendChild(table);
 }
 
+function generateAudios() {
+    let audioElement = document.getElementById('audio');
+    let audioSource = document.createElement('source');
+
+    audioElement.setAttribute('preload', 'auto');
+    audioSource.setAttribute('type', 'audio/mp3');
+
+    audioElement.appendChild(audioSource);
+}
+
 function clickQuit() {
     init();
 }
@@ -276,6 +286,8 @@ function changeInputCSV(event) {
         generateAnswerModal();
         //ジャンル生成
         generateGenres();
+        //効果音要素生成
+        generateAudios();
         document.getElementById('start').style.display = 'none';
         document.getElementById('running').style.display = 'block';
         document.getElementById('menu').style.display = 'block';
@@ -322,6 +334,7 @@ function clickAnswer(number) {
     let answerBody = document.getElementById('answerBody' + number);
     let modalFooter = document.getElementById('modalFooter' + number);
     let answer;
+    let audioElement = document.getElementById('audio');;
     
     // ボタンの無効化
     answerButton.disabled = true;
@@ -339,16 +352,21 @@ function clickAnswer(number) {
       answerBody.innerHTML = '正解！';
       answer = 'correct';
       flag[number] = true;
+      $("#audio source").attr('src', 'audio/correct/1.mp3');
     } else {
       answerBody.innerHTML = '不正解！';
       answerChosen[number] = '';
       answer = 'incorrect';
+      $("#audio source").attr('src', 'audio/incorrect/1.mp3');
     }
     // 結果の表示
     $('#collapse' + number).collapse('show');
     modalFooter.style.display = 'block';
     modifyAnswerModal(answer);
     $('#answerModal').modal('show');
+    audioElement.load();
+    audioElement.currentTime = 0;
+    audioElement.play();
 }
 
 function clickOk(number) {
