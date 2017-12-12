@@ -90,7 +90,7 @@ function generateQuizzes() {
         quiz.id = 'quiz' + i;
         quiz.className = 'modal fade';
         quiz.tabindex = '-1';
-        modalDialog.className = 'modal-dialog modal-lg';
+        modalDialog.className = 'modal-dialog modal-lg modal-quiz';
         modalContent.className = 'modal-content';
         modalHeader.className = 'modal-header';
         modalBody.className = 'modal-body';
@@ -162,7 +162,7 @@ function generateAnswerModal() {
     answerModal.id = 'answerModal';
     answerModal.className = 'modal fade';
     answerModal.tabindex = '-1';
-    modalDialog.className = 'modal-dialog modal-lg';
+    modalDialog.className = 'modal-dialog modal-lg modal-answer';
     modalContent.className = 'modal-content';
     modalHeader.className = 'modal-header';
     modalBody.className = 'modal-body';
@@ -338,6 +338,7 @@ function clickAnswer(number) {
     
     // ボタンの無効化
     answerButton.disabled = true;
+    answerButton.hidden = true;
     for (let j = 1; j <= CHOICES_ROW_END - CHOICES_ROW_START + 1; j++) {
       if (j !== answerChosen[number]) {
         let answerChoiceButton = document.getElementById('answerButton' + number + '-' + j);
@@ -376,6 +377,7 @@ function clickOk(number) {
     if (!flag[number]) {
       let answerButton = document.getElementById('answerButton' + number);
       answerButton.disabled = false;
+      answerButton.hidden = false;
       chooseAnswer(number, 0);
       for (let j = 1; j <= CHOICES_ROW_END - CHOICES_ROW_START + 1; j++) {
         let answerChoiceButton = document.getElementById('answerButton' + number + '-' + j);
