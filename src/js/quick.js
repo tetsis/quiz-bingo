@@ -103,7 +103,8 @@ function generateQuizzes() {
 
         quizBody.id = 'quizBody' + i;
         quizBody.className = 'well sentence';
-        quizBody.innerHTML = quizAndAnswerAndGenre[i - 1][QUIZ_ROW_NUM - 1] + '<br>' + 'Answer is ' + quizAndAnswerAndGenre[i - 1][ANSWER_ROW_NUM - 1];
+        //quizBody.innerHTML = quizAndAnswerAndGenre[i - 1][QUIZ_ROW_NUM - 1] + '<br>' + 'Answer is ' + quizAndAnswerAndGenre[i - 1][ANSWER_ROW_NUM - 1];
+        quizBody.innerHTML = quizAndAnswerAndGenre[i - 1][QUIZ_ROW_NUM - 1];
         modalBody.appendChild(quizBody);
 
         for(let j = 1; j <= CHOICES_ROW_END - CHOICES_ROW_START + 1; j++){
