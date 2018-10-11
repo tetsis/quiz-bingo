@@ -354,25 +354,22 @@ function clickAnswer(number) {
       answer = 'correct';
       flag[number] = true;
       $("#audio source").attr('src', 'audio/correct/1.mp3');
+      audioElement.load();
     } else {
       answerBody.innerHTML = '不正解！';
       answerChosen[number] = '';
       answer = 'incorrect';
-      $("#audio source").attr('src', 'audio/incorrect/1.mp3');
+      //$("#audio source").attr('src', 'audio/incorrect/1.mp3');
     }
     // 結果の表示
     $('#collapse' + number).collapse('show');
     modalFooter.style.display = 'block';
     modifyAnswerModal(answer);
     $('#answerModal').modal('show');
-    audioElement.load();
-    audioElement.currentTime = 0;
-    audioElement.play();
-}
-
-function clickOk(number) {
-    console.log('clickOk');
-    $('#quiz' + number).modal('hide');
+    if (answer == 'correct') {
+      audioElement.currentTime = 0;
+      audioElement.play();
+    }
     // 不正解だった場合はボタンの無効化を解除
     if (!flag[number]) {
       let answerButton = document.getElementById('answerButton' + number);
@@ -384,6 +381,11 @@ function clickOk(number) {
         answerChoiceButton.disabled = false;
       }
     }
+}
+
+function clickOk(number) {
+    console.log('clickOk');
+    $('#quiz' + number).modal('hide');
 }
 
 function getCSV(data) {
